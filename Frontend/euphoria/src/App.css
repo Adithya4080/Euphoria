@@ -3,3 +3,8 @@
   max-width: 1280px;
   margin: 0 auto;
 }
+.underline-offset-2 {
+  text-decoration-thickness: 2px; 
+  text-decoration-color: white; 
+  text-underline-offset: 2px; 
+}
