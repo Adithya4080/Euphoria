@@ -28,7 +28,7 @@ function Spotlight() {
                         <h4 className="text-[32px] font-medium leading-9">T-shirt / Tops</h4>
                         <h2 className='text-[78px] font-[800px] leading-[93px] my-8'>Summer<br />Value Pack</h2>
                         <h4 className="text-[32px] font-medium leading-9">cool / colorful / comfy</h4>
-                        <Button text="Shop Now" className="mt-8" />
+                        <Button text="Shop Now" className="mt-8 py-[16px] px-[72px]" />
                     </div>
                 </div>
             </div>
