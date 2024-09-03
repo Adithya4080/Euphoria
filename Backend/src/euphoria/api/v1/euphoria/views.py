@@ -77,3 +77,33 @@ def protected(request, pk):
         }
 
         return Response(response_data)
+    
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def categories_by_gender(request, gender_id):
+    categories = Category.objects.filter(gender_id=gender_id, is_deleted=False)
+    context = {
+        "request": request
+    }
+    serializer = CategorySerializer(categories, context=context, many=True)
+    response_data = {
+        "status_code": 6000,
+        "data": serializer.data
+    }
+    return Response(response_data)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def products_by_category(request, category_id):
+    products = Product.objects.filter(category_id=category_id, is_deleted=False)
+    context = {
+        "request": request
+    }
+    serializer = ProductSerializer(products, context=context, many=True)
+    response_data = {
+        "status_code": 6000,
+        "data": serializer.data
+    }
+    return Response(response_data)

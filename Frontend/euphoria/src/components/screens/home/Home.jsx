@@ -10,6 +10,9 @@ import Ad3 from '../../includes/ad/Ad3'
 import Feedback from '../../includes/ad/Feedback'
 import Footer from '../../includes/footer/Footer'
 import NewArrivals from '../../includes/products/NewArrivals';
+import MenCategory from '../../includes/products/MenCategory';
+import WomenCategory from '../../includes/products/WomenCategory';
+import Limelight from '../../includes/products/Limelight';
 
 function Home() {
     return (
@@ -23,7 +26,10 @@ function Home() {
                 <Ad1 />
                 <NewArrivals />
                 <Ad2 />
+                <MenCategory />
+                <WomenCategory />
                 <Ad3 />
+                <Limelight />
                 <Feedback />
                 <Footer />
             </Router>
