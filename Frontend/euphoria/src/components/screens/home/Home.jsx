@@ -6,6 +6,7 @@ import Ad1 from '../../includes/ad/Ad1'
 import Ad2 from '../../includes/ad/Ad2'
 import Ad3 from '../../includes/ad/Ad3'
 import Feedback from '../../includes/ad/Feedback'
+import Footer from '../../includes/footer/Footer'
 
 function Home() {
     return (
@@ -19,6 +20,7 @@ function Home() {
             <Ad2 />
             <Ad3 />
             <Feedback />
+            <Footer />
         </>
     )
 }
