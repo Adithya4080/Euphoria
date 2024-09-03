@@ -3,7 +3,7 @@ import React from 'react'
 function Heading({ text, className }) {
     return (
         <div>
-            <h3 className={`bg-white font-semibold text-[34px] text-[#3C4242] leading-[34px] font-causten  rounded-lg ${className}`}>
+            <h3 className={`bg-white font-semibold text-[28px] text-[#3C4242] leading-[34px] font-causten  rounded-lg ${className}`}>
                 {text}
             </h3>
         </div>
