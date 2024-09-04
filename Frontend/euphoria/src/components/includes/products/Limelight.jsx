@@ -23,15 +23,24 @@ function Limelight() {
                 <Rectangle />
                 <Heading text="In The Limelight" />
             </div>
-            <div className='flex flex-wrap'>
+            <div className='grid grid-cols-4 gap-10'>
                 {products.map(product => (
-                    <div key={product.id} className='p-4'>
-                        <img 
-                            src={product.featured_image}
-                            alt={product.name} 
-                            className='w-full h-auto'
-                        />
-                        <p>{product.name}</p>
+                    <div key={product.id} className='w-full'>
+                        <div>
+                            <div className='w-full h-[370px]'>
+                                <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                            </div>
+                        </div>
+
+                        <div className='flex justify-between items-center mt-3'>
+                            <div>
+                                <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>{product.name}</h4>
+                                <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
+                            </div>
+                            <div >
+                                <p className='text-[#2A2F2F] text-[16px] font-bold'>${product.price}</p>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>

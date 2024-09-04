@@ -45,7 +45,7 @@ function NewArrivals() {
                                 <div className='w-[290px] h-[262px]'>
                                     <img src={category.image} alt={category.name} className="w-full h-full" />
                                 </div>
-                                <p className="text-[16px] font-semibold mt-2">{category.name}</p>
+                                <p className="text-[16px] font-semibold mt-2 cursor-pointer">{category.name}</p>
                             </div>
                         ))}
                     </div>
