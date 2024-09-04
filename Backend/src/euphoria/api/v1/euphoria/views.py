@@ -97,13 +97,24 @@ def categories_by_gender(request, gender_id):
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def products_by_category(request, category_id):
-    products = Product.objects.filter(category_id=category_id, is_deleted=False)
+    try:
+        category = Category.objects.get(id=category_id)
+    except Category.DoesNotExist:
+        return Response({
+            "status_code": 6001,
+            "message": "Category not found"
+        })
+
+    products = Product.objects.filter(category=category, is_deleted=False)
     context = {
         "request": request
     }
     serializer = ProductSerializer(products, context=context, many=True)
+
     response_data = {
         "status_code": 6000,
+        "category_name": category.name,  # Include category name in the response
         "data": serializer.data
     }
+
     return Response(response_data)

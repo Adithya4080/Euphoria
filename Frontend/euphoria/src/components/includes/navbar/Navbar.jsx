@@ -1,16 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../../../assets/Logo.svg'
 import search from '../../../assets/search.svg';
 import wishlist from '../../../assets/wishlist.svg';
 import user from '../../../assets/account.svg';
-import cart from '../../../assets/cart.svg'
+import cart from '../../../assets/cart.svg';
 
 function Navbar() {
     return (
-        <div className='font-causten py-4 sticky top-0 bg-white z-10'>
+        <div className='font-causten py-8 sticky top-0 bg-white z-10'>
             <div className="wrapper  flex justify-between items-center">
                 <div className='navleft cursor-pointer'>
-                    <h1><img src={logo} alt="Logo" /></h1>
+                    <h1><Link to="/"><img src={logo} alt="Logo" /></Link></h1>
                 </div>
                 <div className='navmid1'>
                     <ul className='flex space-x-[40px] text-[18px] cursor-pointer'>

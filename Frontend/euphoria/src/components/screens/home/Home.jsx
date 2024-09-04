@@ -1,6 +1,5 @@
 import React from 'react'
 import {Helmet} from 'react-helmet'
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import Navbar from '../../includes/navbar/Navbar'
 import Spotlight from '../../includes/spotlight/Spotlight'
@@ -20,7 +19,6 @@ function Home() {
             <Helmet>
                 <title>Euphoria | Home</title>
             </Helmet>
-            <Router>
                 <Navbar />
                 <Spotlight />
                 <Ad1 />
@@ -32,7 +30,6 @@ function Home() {
                 <Limelight />
                 <Feedback />
                 <Footer />
-            </Router>
         </>
     )
 }
