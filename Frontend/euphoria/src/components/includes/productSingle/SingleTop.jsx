@@ -1,4 +1,6 @@
 import React from 'react';
+import Rectangle from '../../general/Rectangle';
+import Heading from '../../general/Heading';
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 import pic1 from '../../../assets/img-20.jpg';
 import pic2 from '../../../assets/img-23.jpg';
@@ -6,7 +8,11 @@ import pic3 from '../../../assets/img-22.jpg';
 import Arrow from '../../../assets/Arrow.svg';
 import Message from '../../../assets/message.svg';
 import Right from '../../../assets/arrow-right.svg';
-import cart from '../../../assets/Icon.svg';
+import cart from '../../../assets/shopping cart.svg';
+import card from '../../../assets/credit card.svg';
+import dress from '../../../assets/Frame 25.svg';
+import truck from '../../../assets/truck.svg'
+import shipping from '../../../assets/shipping.svg'
 
 function SingleTop() {
     return (
@@ -96,7 +102,7 @@ function SingleTop() {
                             <div className='bg-[#9C1F35] w-[22px] h-[22px] rounded-full'></div>
                         </div>
                     </div>
-                    <div className='mt-10 flex space-x-4'>
+                    <div className='mt-10 flex space-x-6'>
                         <button className='flex space-x-2 items-center bg-[#8A33Fd] text-white py-2 px-10 rounded-lg'>
                             <img src={cart} alt="Cart" className='text-white fill-current' />
                             <p className='text-[16px] font-semibold '>Add to cart</p>
@@ -107,8 +113,98 @@ function SingleTop() {
                     </div>
                     <div className='border-b border-[#BEBCBD] mt-7'></div>
                 </div>
-
+                <div className='py-5'>
+                    <div className='flex gap-[140px]'>
+                        <div className='flex items-center space-x-6'>
+                            <div><img src={card} alt="Payment" /></div>
+                            <p className='text-[16px] text-[#3C4242] font-medium'>Secure payment</p>
+                        </div>
+                        <div className='flex items-center space-x-6'>
+                            <div><img src={dress} alt="Dress" /></div>
+                            <p className='text-[16px] text-[#3C4242] font-medium'>Size & Fit</p>
+                        </div>
+                    </div>
+                    <div className='flex gap-[166px] mt-6'>
+                        <div className='flex items-center space-x-6'>
+                            <div><img src={truck} alt="Shipping" /></div>
+                            <p className='text-[16px] text-[#3C4242] font-medium'>Free Shipping</p>
+                        </div>
+                        <div className='flex items-center space-x-10'>
+                            <div><img src={shipping} alt="Shipping" /></div>
+                            <p className='text-[16px] text-[#3C4242] font-medium'>Free Shipping & Returns</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div className='pb-20 font-causten'>
+				<div className='flex items-center space-x-5 mb-10'>
+					<Rectangle />
+					<Heading text="Product Description" />
+				</div>
+				<div className='flex w-full'>
+					<div className='w-1/2 space-y-10 mt-7'>
+						<div className='flex space-x-8'>
+							<div className=''>
+								<p className='text-[16px] text-[#3C4242] font-semibold'>Description</p>
+								<div className='border-b-[3px] rounded-[1px] border-[#3C4242]  w-[50px] pb-3'></div>
+							</div>
+							<div className='flex space-x-3'>
+								<p className='text-[16px] font-normal text-[#807D7E]'>User Comments</p>
+								<p className='w-[24px] h-[24px] bg-[#8A33Fd] text-white flex items-center justify-center rounded-lg text-[12px]'>21</p>
+							</div>
+							<div className='flex space-x-3'>
+								<p className='text-[16px] font-normal text-[#807D7E]'>Question & Answer</p>
+								<p className='w-[24px] h-[24px] bg-[#8A33Fd] text-white flex items-center justify-center rounded-lg text-[12px]'>21</p>
+							</div>							
+						</div>
+						<div>
+							<p className='text-[16px] text-[#807D7E]'>100% Bio-washed Cotton - makes the fabric extra soft & silky. Flexible ribbed crew neck. Precisely stitched with no pilling & no fading. Provide  all-time comfort. Anytime, anywhere. Infinite range of matte-finish HD prints.</p>
+						</div>
+					</div>
+					<div className='w-1/2 flex'>
+						<div className='border-r border-r-[#BEBCBD] w-1/3 space-y-4 '>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-4'>Fabric</p>
+								<p className='text-[16px] font-medium leading-[16px] pb-2'>Bio-Washed Cotton</p>
+							</div>
+							<div className='border-b border-b-[#BEBCBD]'></div>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-4'>Neck</p>
+								<p className='text-[16px] font-medium leading-[16px]'>Round Neck</p>
+							</div>
+						</div>
+						<div className='border-r border-r-[#BEBCBD] w-1/3 space-y-4'>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-4'>Pattern</p>
+								<p className='text-[16px] font-medium leading-[16px] pb-2'>Printed</p>
+							</div>
+							<div className='border-b border-b-[#BEBCBD]'></div>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-4'>Sleeve</p>
+								<p className='text-[16px] font-medium leading-[16px]'>Half-sleeves</p>
+							</div>
+						</div>
+						<div className='w-1/3 space-y-4'>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-4'>Fit</p>
+								<p className='text-[16px] font-medium leading-[16px] pb-2'>Regular-fit</p>
+							</div>
+							<div className='border-b border-b-[#BEBCBD]'></div>
+							<div className='ml-10'>
+								<p className='text-[16px] text-[#807D7E] pb-5'>Style</p>
+								<p className='text-[16px] font-medium leading-[16px]'>Casual Wear</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className='mt-10'>
+					<div className='flex items-center space-x-5 mb-10'>
+						<Rectangle />
+						<Heading text="Similar Products" />
+					</div>
+				</div>
+			</div>
         </div>
     )
 }
