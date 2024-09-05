@@ -8,7 +8,7 @@ import cart from '../../../assets/cart.svg';
 
 function Navbar() {
     return (
-        <div className='font-causten py-8 sticky top-0 bg-white z-10'>
+        <div className='font-causten py-8 sticky top-0 bg-white z-10 border-b border-[#BEBCBD]'>
             <div className="wrapper  flex justify-between items-center">
                 <div className='navleft cursor-pointer'>
                     <h1><Link to="/"><img src={logo} alt="Logo" /></Link></h1>
