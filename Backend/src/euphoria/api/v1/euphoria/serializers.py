@@ -38,3 +38,8 @@ class ProductSerializer(ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return representation
+
+    def get_featured_image(self, obj):
+        request = self.context.get('request')
+        image_url = obj.featured_image.url
+        return request.build_absolute_uri(image_url)

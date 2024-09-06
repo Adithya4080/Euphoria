@@ -23,20 +23,28 @@ function ProductSinglePage() {
     const [ product, setProduct ] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
-
+   
     useEffect(() => {
         fetch(`http://localhost:8000/api/v1/category/view/${id}`)
             .then(response => response.json())
             .then(result => {
                 setProduct(result.data);
-                return fetch(`http://localhost:8000/api/v1/category/products/${id}`);
+    
+                // Fetch similar products based on category and excluding the current product
+                return fetch(`http://localhost:8000/api/v1/category/products/${result.data.category_id}`);
             })
             .then(response => response.json())
             .then(data => {
-                setSimilarProducts(data.products);
+                if (data.status_code === 6000) {
+                    setSimilarProducts(data.products);
+                } else {
+                    console.log('No similar products found');
+                }
             })
-            .catch(error => console.error('Error fetching product details:', error));
+            .catch(error => console.error('Error fetching similar products:', error));
     }, [id]);
+    
+    
     
     
     const handleSizeClick = (size) => {
@@ -199,7 +207,7 @@ function ProductSinglePage() {
                                 <p className='text-[16px] text-[#807D7E] max-w-[600px]'>{product.description}</p>
                             </div>
                         </div>
-                        <div className='w-1/2 flex'>
+                        <div className='w-1/2 flex bg-[#fafafa] rounded-lg py-1'>
                             <div className='border-r border-r-[#BEBCBD] w-1/3 space-y-4 '>
                                 <div className='ml-10'>
                                     <p className='text-[16px] text-[#807D7E] pb-4'>Fabric</p>
@@ -241,33 +249,31 @@ function ProductSinglePage() {
                             <Heading text="Similar Products" />
                         </div>
                         <div className='grid grid-cols-4 gap-10'>
-                        {/* {similarProducts.map((product) => (
-                            <div key={product.id} className='w-full'>
-                                <div className='relative'>
-                                    <div className='w-full h-[370px] relative'>
-                                        <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                            {similarProducts.map((product) => (
+                                <div key={product.id} className='w-full'>
+                                    <div className='relative'>
+                                        <div className='w-full h-[370px] relative'>
+                                            <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                                        </div>
+                                        <div className=' z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer'>
+                                            <img src={wishlist} alt="Wishlist"  className='p-2'/>
+                                        </div>
                                     </div>
-                                    <div className=' z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer'>
-                                        <img src={wishlist} alt="Wishlist"  className='p-2'/>
+                                    <div className='flex justify-between items-center mt-3'>
+                                        <div>
+                                            <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>{product.name}</h4>
+                                            <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
+                                        </div>
+                                        <div >
+                                            <p className='text-[#2A2F2F] text-[16px] font-bold'>${product.price}</p>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div className='flex justify-between items-center mt-3'>
-                                    <div>
-                                        <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>{product.name}</h4>
-                                        <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
-                                    </div>
-                                    <div >
-                                        <p className='text-[#2A2F2F] text-[16px] font-bold'>${product.price}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))} */}
-                    </div>      
-
+                            ))}
+                        </div>   
+                    </div>
                 </div>
             </div>
-        </div>
             <Footer />
         </>
     )

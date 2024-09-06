@@ -126,20 +126,28 @@ def products_by_category(request, category_id):
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
-def similar_products_by_category(request, category_id):
+def similar_products_by_category(request, category_id, exclude_product_id):
     try:
-        products = Product.objects.filter(category_id=category_id, is_deleted=False)
-        context = {
-            "request": request
-        }
-        # Serialize the products
-        serializer = ProductSerializer(products, context=context, many=True)
+        # Fetch products with the same category, excluding the current one
+        products = Product.objects.filter(category_id=category_id, is_deleted=False).exclude(id=exclude_product_id)
 
-        response_data = {
+        # Check if products exist
+        if not products.exists():
+            return Response({
+                "status_code": 6001,
+                "message": "No similar products found"
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # Serialize products
+        serializer = ProductSerializer(products, many=True, context={"request": request})
+
+        return Response({
             "status_code": 6000,
-            "data": serializer.data
-        }
-        
-        return Response(response_data)
+            "products": serializer.data
+        }, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': str(e)}, status=500)
+        return Response({
+            "status_code": 6001,
+            "error": str(e)
+        }, status=status.HTTP_400_BAD_REQUEST)
+
