@@ -1,6 +1,9 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
 
 
 from api.v1.euphoria.serializers import CategorySerializer, ProductSerializer
@@ -109,12 +112,34 @@ def products_by_category(request, category_id):
     context = {
         "request": request
     }
+    
     serializer = ProductSerializer(products, context=context, many=True)
 
     response_data = {
         "status_code": 6000,
-        "category_name": category.name,  # Include category name in the response
+        "category_name": category.name,  
         "data": serializer.data
     }
 
     return Response(response_data)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def similar_products_by_category(request, category_id):
+    try:
+        products = Product.objects.filter(category_id=category_id, is_deleted=False)
+        context = {
+            "request": request
+        }
+        # Serialize the products
+        serializer = ProductSerializer(products, context=context, many=True)
+
+        response_data = {
+            "status_code": 6000,
+            "data": serializer.data
+        }
+        
+        return Response(response_data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)

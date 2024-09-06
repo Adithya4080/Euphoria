@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
@@ -9,7 +10,7 @@ import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
 
 function CategoryProducts() {
-    const { id } = useParams(); // Get category ID from URL
+    const { id } = useParams();
     const [products, setProducts] = useState([]);
     const [categoryName, setCategoryName] = useState('');
 
@@ -39,7 +40,9 @@ function CategoryProducts() {
                         <div key={product.id}>
                             <div className='relative'>
                                 <div className='w-full h-[370px] relative'>
-                                    <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                                    <Link to={`/product/${product.id}`}>
+                                        <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                                    </Link>
                                 </div>
                                 <div className=' z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer'>
                                     <img src={wishlist} alt="Wishlist"  className='p-2'/>
@@ -47,7 +50,11 @@ function CategoryProducts() {
                             </div>
                             <div className='flex justify-between items-center mt-3'>
                                 <div>
-                                    <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>{product.name}</h4>
+                                    <Link to={`/product/${product.id}`}>
+                                        <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>
+                                            {product.name}
+                                        </h4>
+                                    </Link>
                                     <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
                                 </div>
                                 <div >

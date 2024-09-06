@@ -7,4 +7,5 @@ urlpatterns = [
     path('protected/<int:pk>', views.protected),
     path('gender/<int:gender_id>', views.categories_by_gender), 
     path('products/category/<int:category_id>/', views.products_by_category),
+    path('products/<int:category_id>/', views.similar_products_by_category)
 ]

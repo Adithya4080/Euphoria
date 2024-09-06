@@ -35,3 +35,6 @@ class ProductSerializer(ModelSerializer):
         serializers = GallerySerializer(images, many=True, context={"request":request})
         return serializers.data
     
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return representation
