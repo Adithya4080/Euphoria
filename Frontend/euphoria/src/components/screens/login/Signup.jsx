@@ -25,6 +25,7 @@ function Signup() {
             const response = await axios.post('http://localhost:8000/api/v1/auth/create/', formData);
             if (response.data.status_code === 6000) {
                 localStorage.setItem('username', formData.name);
+                localStorage.setItem('token', response.data.token);
                 navigate('/login');
             } else {
                 setErrorMessage(response.data.data);  
@@ -116,3 +117,4 @@ function Signup() {
 }
 
 export default Signup;
+

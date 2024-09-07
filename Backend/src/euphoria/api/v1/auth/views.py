@@ -36,6 +36,7 @@ def create(request):
         data = {
             "username": email,
             "password": password,
+            "first_name" : name,
         }
 
         protocol = "http://"

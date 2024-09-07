@@ -8,3 +8,6 @@
   text-decoration-color: white; 
   text-underline-offset: 2px; 
 }
+.wishlist-active {
+  filter: invert(32%) sepia(77%) saturate(4853%) hue-rotate(340deg) brightness(95%) contrast(104%);
+}
