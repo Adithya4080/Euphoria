@@ -151,3 +151,29 @@ def similar_products_by_category(request, category_id, exclude_product_id):
             "error": str(e)
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])  # Ensure only logged-in users can access
+def protected_category_products(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id)
+    except Category.DoesNotExist:
+        return Response({
+            "status_code": 6001,
+            "message": "Category not found"
+        })
+
+    products = Product.objects.filter(category=category, is_deleted=False)
+    context = {
+        "request": request
+    }
+
+    serializer = ProductSerializer(products, context=context, many=True)
+
+    response_data = {
+        "status_code": 6000,
+        "category_name": category.name,
+        "data": serializer.data
+    }
+
+    return Response(response_data)

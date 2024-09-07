@@ -24,10 +24,10 @@ function Signup() {
         try {
             const response = await axios.post('http://localhost:8000/api/v1/auth/create/', formData);
             if (response.data.status_code === 6000) {
-                // Account created, redirect to login
+                localStorage.setItem('username', formData.name);
                 navigate('/login');
             } else {
-                setErrorMessage(response.data.data);  // Show error message from backend
+                setErrorMessage(response.data.data);  
             }
         } catch (error) {
             setErrorMessage('An error occurred. Please try again.');
