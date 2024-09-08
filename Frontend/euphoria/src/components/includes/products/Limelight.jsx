@@ -70,12 +70,12 @@ function Limelight() {
     };
 
     return (
-        <div className='wrapper'>
+        <div className='wrapper py-20'>
             <div className='flex items-center space-x-5 mb-10'>
                 <Rectangle />
                 <Heading text="In The Limelight" />
             </div>
-            <div className='grid grid-cols-4 gap-10'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 gap-10'>
                 {products.map(product => (
                     <div key={product.id} className='w-full'>
                         <div className='relative'>

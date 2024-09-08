@@ -25,10 +25,10 @@ function MenCategory() {
                 <Rectangle />
                 <Heading text="Categories For Men" />
             </div>
-            <div className='grid grid-cols-4 gap-6 font-causten'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-3 gap-6 font-causten'>
                 {categories.map(category => (
-                    <div key={category.id} className='mt-10'>
-                        <div className='w-[300px] h-[393px]'>
+                    <div key={category.id} className='mt-10 w-full'>
+                        <div className='w-full h-[393px] '>
                             <img src={category.image} alt={category.name} className='w-full h-full' />
                         </div>
                         <div className='flex justify-between items-center mt-3 cursor-pointer'>

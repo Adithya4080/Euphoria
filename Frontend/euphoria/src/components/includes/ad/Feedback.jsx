@@ -18,10 +18,26 @@ function Feedback() {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1280, // At screen widths of 1280px and below
+                settings: {
+                    slidesToShow: 2, // Show 2 slides
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768, // At screen widths of 768px and below
+                settings: {
+                    slidesToShow: 1, // Show 1 slide
+                    slidesToScroll: 1,
+                }
+            }
+        ]
     };
 
     return (
-        <div className='wrapper py-10'>
+        <div className='wrapper pb-20'>
             <div className='flex items-center space-x-5 mb-10'>
                 <Rectangle />
                 <Heading text="Feedback" />

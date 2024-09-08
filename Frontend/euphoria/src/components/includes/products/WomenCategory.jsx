@@ -21,15 +21,15 @@ function WomenCategory() {
     };
 
     return (
-        <div className='wrapper'>
+        <div className='wrapper py-20'>
             <div className='flex items-center space-x-5 mb-10'>
                 <Rectangle />
                 <Heading text="Categories For Women" />
             </div>
-            <div className='grid grid-cols-4 gap-6'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 gap-6'>
                 {categories.map(category => (
                     <div key={category.id}>
-                        <div className='w-[300px] h-[393px]'>
+                        <div className='w-full h-[393px]'>
                             <img src={category.image} alt={category.name} className='w-full h-full' />
                         </div>
                         <div className='flex justify-between items-center mt-3 cursor-pointer'>
