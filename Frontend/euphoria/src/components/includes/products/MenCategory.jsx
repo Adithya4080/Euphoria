@@ -20,12 +20,12 @@ function MenCategory() {
     };
 
     return (
-        <div className='wrapper'>
-            <div className='flex items-center space-x-5 mb-10'>
+        <div className='wrapper pt-10'>
+            <div className='flex items-center space-x-5 mb-10 max-[768px]:mb-1'>
                 <Rectangle />
-                <Heading text="Categories For Men" />
+                <Heading text="Categories For Men" className='max-[360px]:text-[24px]'  />
             </div>
-            <div className='grid grid-cols-4 max-[1320px]:grid-cols-3 gap-6 font-causten'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-3 max-[768px]:grid-cols-2 max-[360px]:grid-cols-1 gap-6 font-causten'>
                 {categories.map(category => (
                     <div key={category.id} className='mt-10 w-full'>
                         <div className='w-full h-[393px] '>

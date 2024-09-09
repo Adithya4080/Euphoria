@@ -29,8 +29,6 @@ function ProductSinglePage() {
             .then(response => response.json())
             .then(result => {
                 setProduct(result.data);
-    
-                // Fetch similar products based on category and excluding the current product
                 return fetch(`http://localhost:8000/api/v1/category/products/${result.data.category_id}`);
             })
             .then(response => response.json())

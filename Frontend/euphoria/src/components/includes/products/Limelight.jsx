@@ -75,7 +75,7 @@ function Limelight() {
                 <Rectangle />
                 <Heading text="In The Limelight" />
             </div>
-            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 gap-10'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 max-[480px]:grid-cols-1 gap-10'>
                 {products.map(product => (
                     <div key={product.id} className='w-full'>
                         <div className='relative'>
@@ -97,15 +97,15 @@ function Limelight() {
                         <div className='flex justify-between items-center mt-3'>
                             <div>
                                 <h4
-                                    className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'
+                                    className='text-[#2A2F2F] text-[14px] max-[480px]:text-[20px] max-[480px]:max-w-[230px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'
                                     onClick={() => handleProductClick(product.id)}
                                 >
                                     {product.name}
                                 </h4>
-                                <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
+                                <p className='text-[#7F7F7F] text-[12px] max-[480px]:text-[16px] font-medium'>{product.brand}'s Brand</p>
                             </div>
                             <div>
-                                <p className='text-[#2A2F2F] text-[16px] font-bold'>${product.price}</p>
+                                <p className='text-[#2A2F2F] text-[16px] max-[480px]:text-[22px] font-bold'>${product.price}</p>
                             </div>
                         </div>
                     </div>

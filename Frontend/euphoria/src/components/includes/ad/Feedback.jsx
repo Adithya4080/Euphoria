@@ -43,7 +43,7 @@ function Feedback() {
                 <Heading text="Feedback" />
             </div>
             <Slider {...settings}>
-                <div className='pr-5 h-[300px]'>
+                <div className='pr-5 h-[300px] max-[430px]:h-[370px]'>
                     <div className=' border border-[#BEBCBD] p-6 rounded-lg h-full'>
                         <div className='flex justify-between'>
                             <div>
@@ -60,7 +60,7 @@ function Feedback() {
                         </div>
                     </div>
                 </div>
-                <div className='pr-5 h-[300px]'>
+                <div className='pr-5 h-[300px] max-[430px]:h-[370px]'>
                     <div className=' border border-[#BEBCBD] p-6 rounded-lg h-full'>
                         <div className='flex justify-between'>
                             <div>
@@ -76,7 +76,7 @@ function Feedback() {
                         </div>
                     </div>
                 </div>
-                <div className='pr-5 h-[300px]'>
+                <div className='pr-5 h-[300px] max-[430px]:h-[370px]'>
                     <div className=' border border-[#BEBCBD] p-6 rounded-lg h-full'>
                         <div className='flex justify-between'>
                             <div>

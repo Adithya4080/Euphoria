@@ -15,8 +15,8 @@ function Footer() {
                 <div className="footer_top px-20 w-full max-[1340px]:px-40 max-[1200px]:px-20 max-[780px]:text-center max-[780px]:px-0">
                     <div className='grid grid-cols-4 whitespace-nowrap w-full max-[1200px]:grid-cols-2 max-[780px]:grid-cols-1 '>
                         <div>
-                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Need Help</h6>
-                            <ul className='space-y-3 text-[16px] font-medium'>
+                            <h6 className='text-[24px] max-[420px]:text-[20px] font-bold mb-6 max-[1200px]:mb-3'>Need Help</h6>
+                            <ul className='space-y-3 text-[16px] max-[420px]:text-[14px] font-medium'>
                                 <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Track Order</a></li>
                                 <li><a href="#">Returns & Refunds</a></li>
@@ -25,8 +25,8 @@ function Footer() {
                             </ul>
                         </div>
                         <div className='max-[780px]:mt-12'>
-                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Company</h6>
-                            <ul className='space-y-3 text-[16px] font-medium'>
+                            <h6 className='text-[24px] max-[420px]:text-[20px] font-bold mb-6 max-[1200px]:mb-3'>Company</h6>
+                            <ul className='space-y-3 text-[16px] max-[420px]:text-[14px] font-medium'>
                                 <li><a href="#">About Us</a></li>
                                 <li><a href="#">euphoria Blog</a></li>
                                 <li><a href="#">euphoriastan</a></li>
@@ -35,8 +35,8 @@ function Footer() {
                             </ul>
                         </div>
                         <div className='max-[1200px]:mt-12'>
-                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>More Info</h6>
-                            <ul className='space-y-3 text-[16px] font-medium'>
+                            <h6 className='text-[24px] max-[420px]:text-[20px] font-bold mb-6 max-[1200px]:mb-3'>More Info</h6>
+                            <ul className='space-y-3 text-[16px] max-[420px]:text-[14px] font-medium'>
                                 <li><a href="#">Terms and Conditions</a></li>
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Shipping Policy</a></li>
@@ -44,8 +44,8 @@ function Footer() {
                             </ul>
                         </div>
                         <div className='max-[1200px]:mt-12'>
-                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Location</h6>
-                            <ul className='space-y-3 text-[16px] font-medium'>
+                            <h6 className='text-[24px] max-[420px]:text-[20px] font-bold mb-6 max-[1200px]:mb-3'>Location</h6>
+                            <ul className='space-y-3 text-[16px] max-[420px]:text-[14px] max-[360px]:text-[12px] font-medium'>
                                 <li><a href="#">support@euphoria.in</a></li>
                                 <li>Eklingpura Chouraha, Ahmedabad Main Road</li>
                                 <li>(NH 8- Near Mahadev Hotel) Udaipur, India- 313002</li>

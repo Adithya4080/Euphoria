@@ -104,7 +104,6 @@ function CategoryProducts() {
             })
                 .then(response => {
                     if (response.status === 401) {
-                        // Unauthorized, redirect to login
                         navigate('/login');
                     }
                     return response.json();
@@ -133,7 +132,7 @@ function CategoryProducts() {
                     <Heading text={categoryName} />
                 </div>
                 {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
-                <div className='grid grid-cols-4  gap-10 mb-10'>
+                <div className='grid grid-cols-4 max-[1080px]:grid-cols-3 max-[768px]:grid-cols-2 gap-10 mb-10'>
                     {products.map(product => (
                         <div key={product.id}>
                             <div className='relative'>
