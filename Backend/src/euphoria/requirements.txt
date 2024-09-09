@@ -1,0 +1,7 @@
+django - pip install django
+psycopg2 - pip install psycopg2-binary
+rest framework - pip install djangorestframework
+image - pip install pillow
+simple jwt - pip install djangorestframework-simplejwt
+requests - pip install requests
+cors headers - pip install django-cors-headers

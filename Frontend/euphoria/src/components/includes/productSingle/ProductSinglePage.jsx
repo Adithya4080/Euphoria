@@ -59,7 +59,7 @@ function ProductSinglePage() {
             </Helmet>
             <Navbar />
             <div className="wrapper">
-                <div className='wrapper top flex items-center pb-20 space-x-10 font-causten'>
+                <div className='top flex items-center pb-20 space-x-10 font-causten'>
                     <div className='top_left flex flex-col space-y-4'>
                         {product.gallery.map((item, index) => (
                             <div key={item.id} className='w-[68px] h-[68px] cursor-pointer'>
@@ -80,7 +80,7 @@ function ProductSinglePage() {
                             <img src={product.featured_image} alt={product.name} className='w-full h-full' />
                         </div>
                     </div>
-                    <div className='top_right w-full'>
+                    <div className='top_right w-full pl-10'>
                         <div className='flex items-center text-[14px] font-medium text-[#807D7E]'>
                             <p>Shop</p>
                             <img src={Arrow} alt="Arrow" className='rotate-90' />
