@@ -27,9 +27,8 @@ function Login() {
             console.log('Response data:', response.data);
             if (response.data.access) {
                 const token = response.data.access;
-                const username = localStorage.getItem('username') || 'User';
+                const username = formData.name;
     
-               
                 localStorage.setItem('token', token);
                 localStorage.setItem('username', username); 
                 navigate('/');

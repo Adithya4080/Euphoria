@@ -20,7 +20,7 @@ class ProductSerializer(ModelSerializer):
     gallery = serializers.SerializerMethodField()
 
     class Meta:
-        fields = ("id", "name", "featured_image", "description","brand", "price", "size", "category", "gallery")
+        fields = ("id", "name", "featured_image", "description","brand", "price", "size","ratings", "category", "gallery")
         model = Product
 
     def get_category(self, instance):

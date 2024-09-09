@@ -5,18 +5,21 @@ import CategoryProducts from './components/includes/products/CategoryProducts';
 import ProductSinglePage from './components/includes/productSingle/ProductSinglePage';
 import Login from './components/screens/login/Login';
 import Signup from './components/screens/login/Signup';
+import { WishlistProvider } from './components/includes/context/Context';
 
 function App() {
 	return (
 		<>
 			<Router>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/category/:id" element={<CategoryProducts />} />
-					<Route path = "/product/:id" element={<ProductSinglePage />} />
-					<Route path= "/login" element ={<Login />} />
-					<Route path='/create' element={<Signup />} />
-				</Routes>
+				<WishlistProvider>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/category/:id" element={<CategoryProducts />} />
+						<Route path = "/product/:id" element={<ProductSinglePage />} />
+						<Route path= "/login" element ={<Login />} />
+						<Route path='/create' element={<Signup />} />
+					</Routes>
+				</WishlistProvider>
 			</Router>
 
 		</>

@@ -6,7 +6,7 @@ import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
-import { IoStar} from "react-icons/io5";
+import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 
 import wishlist from '../../../assets/wishlist.svg';
 import Arrow from '../../../assets/Arrow.svg';
@@ -29,7 +29,7 @@ function ProductSinglePage() {
             .then(response => response.json())
             .then(result => {
                 setProduct(result.data);
-                return fetch(`http://localhost:8000/api/v1/category/products/${result.data.category_id}`);
+                return fetch(`http://localhost:8000/api/v1/category/view/${result.data.category_id}`);
             })
             .then(response => response.json())
             .then(data => {
@@ -59,10 +59,10 @@ function ProductSinglePage() {
             </Helmet>
             <Navbar />
             <div className="wrapper">
-                <div className='top flex items-center pb-20 space-x-10 font-causten'>
-                    <div className='top_left flex flex-col space-y-4'>
+                <div className='top flex items-center pb-20 gap-10 font-causten'>
+                    <div className='top_left gap-4 flex flex-col'>
                         {product.gallery.map((item, index) => (
-                            <div key={item.id} className='w-[68px] h-[68px] cursor-pointer'>
+                            <div key={item.id} className='imgs w-[68px] h-[68px] cursor-pointer'>
                                 <img src={item.image} alt={`product ${index}`} className='w-full h-full' />
                             </div>
                         ))}
@@ -76,7 +76,7 @@ function ProductSinglePage() {
                         </div>
                     </div>
                     <div className="top_mid">
-                        <div className='w-[520px] h-[785px]'>
+                        <div className='img w-[520px] h-[785px]'>
                             <img src={product.featured_image} alt={product.name} className='w-full h-full' />
                         </div>
                     </div>
@@ -96,11 +96,19 @@ function ProductSinglePage() {
                         <div className='flex items-center space-x-10'>
                             <div className='flex space-x-4 items-center'>
                                 <div className='text-[#EDD146] flex space-x-1'>
-                                    {[...Array(product.rating)].map((_, index) => (
-                                        <IoStar key={index} />
-                                    ))}
+                                    {Array.from({ length: 5 }, (_, index) => {
+                                        const ratingValue = product.ratings;
+                                            if (index < Math.floor(ratingValue)) {
+                                                return <IoStar key={index} />;
+                                            } else if (index < ratingValue) {
+                                                return <IoStarHalf key={index} />;
+                                            } else {
+                                                return <IoStarOutline key={index} />;
+                                            }
+                                        })
+                                    }
                                 </div>
-                                <p className='text-[#807D7E] text-[14px] '>{product.rating}</p>
+                                <p className='text-[#807D7E] text-[14px]'>{product.ratings}</p>
                             </div>
                             <div className='flex items-center space-x-2 text-[#807D7E] text-[14px]'>
                                 <div><img src={Message} alt="Message" /></div>
@@ -185,9 +193,9 @@ function ProductSinglePage() {
                         <Rectangle />
                         <Heading text="Product Description" />
                     </div>
-                    <div className='flex w-full'>
-                        <div className='w-1/2 space-y-10 mt-7'>
-                            <div className='flex space-x-8'>
+                    <div className='flex max-[1280px]:flex-col w-full'>
+                        <div className='w-1/2 space-y-10 mt-7 max-[1280px]:w-full '>
+                            <div className='flex space-x-8 whitespace-nowrap'>
                                 <div className=''>
                                     <p className='text-[16px] text-[#3C4242] font-semibold'>Description</p>
                                     <div className='border-b-[3px] rounded-[1px] border-[#3C4242]  w-[50px] pb-3'></div>
@@ -196,17 +204,17 @@ function ProductSinglePage() {
                                     <p className='text-[16px] font-normal text-[#807D7E]'>User Comments</p>
                                     <p className='w-[24px] h-[24px] bg-[#8A33Fd] text-white flex items-center justify-center rounded-lg text-[12px]'>21</p>
                                 </div>
-                                <div className='flex space-x-3'>
+                                <div className='flex space-x-3 max-[520px]:hidden'>
                                     <p className='text-[16px] font-normal text-[#807D7E]'>Question & Answer</p>
                                     <p className='w-[24px] h-[24px] bg-[#3c4242] text-white flex items-center justify-center rounded-lg text-[12px]'>4</p>
                                 </div>							
                             </div>
                             <div>
-                                <p className='text-[16px] text-[#807D7E] max-w-[600px]'>{product.description}</p>
+                                <p className='text-[16px] text-[#807D7E] max-w-[600px] max-[1280px]:max-w-[1000px]'>{product.description}</p>
                             </div>
                         </div>
-                        <div className='w-1/2 flex bg-[#fafafa] rounded-lg py-1'>
-                            <div className='border-r border-r-[#BEBCBD] w-1/3 space-y-4 '>
+                        <div className='w-1/2 max-[1280px]:mt-5 max-[1280px]:w-3/4 max-[900px]:w-full max-[1280px]:py-4 grid grid-cols-3 max-[680px]:hidden  bg-[#fafafa] rounded-lg py-1'>
+                            <div className='border-r border-r-[#BEBCBD] space-y-4'>
                                 <div className='ml-10'>
                                     <p className='text-[16px] text-[#807D7E] pb-4'>Fabric</p>
                                     <p className='text-[16px] font-medium leading-[16px] pb-2'>Bio-Washed Cotton</p>
@@ -217,7 +225,7 @@ function ProductSinglePage() {
                                     <p className='text-[16px] font-medium leading-[16px]'>Round Neck</p>
                                 </div>
                             </div>
-                            <div className='border-r border-r-[#BEBCBD] w-1/3 space-y-4'>
+                            <div className='border-r border-r-[#BEBCBD]  space-y-4'>
                                 <div className='ml-10'>
                                     <p className='text-[16px] text-[#807D7E] pb-4'>Pattern</p>
                                     <p className='text-[16px] font-medium leading-[16px] pb-2'>Printed</p>
@@ -228,7 +236,7 @@ function ProductSinglePage() {
                                     <p className='text-[16px] font-medium leading-[16px]'>Half-sleeves</p>
                                 </div>
                             </div>
-                            <div className='w-1/3 space-y-4'>
+                            <div className=' space-y-4 block'>
                                 <div className='ml-10'>
                                     <p className='text-[16px] text-[#807D7E] pb-4'>Fit</p>
                                     <p className='text-[16px] font-medium leading-[16px] pb-2'>Regular-fit</p>

@@ -11,3 +11,38 @@
 .wishlist-active {
   filter: invert(32%) sepia(77%) saturate(4853%) hue-rotate(340deg) brightness(95%) contrast(104%);
 }
+
+@media (max-width: 1080px) {
+  .top {
+    flex-wrap: wrap;
+  }
+
+  .top_left, .top_mid {
+    margin: 0 auto;
+    gap: 4;
+  }
+.top_mid .img{
+  width: 350px;
+  height: 350px;
+}
+  .top_right {
+    flex: 1 1 100%; 
+    margin: 0 auto;
+  }
+  .top_right h3{
+    max-width: 100%;
+  }
+}
+@media (max-width: 600px){
+  .top_left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .top_left .imgs{
+    width: 100px;
+    height: 100px;
+  }
+}
