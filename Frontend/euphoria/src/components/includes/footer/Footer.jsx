@@ -12,10 +12,10 @@ function Footer() {
     return (
         <div className='bg-[#3C4242] py-24'>
             <div className="wrapper font-causten text-white">
-                <div className="footer_top px-24">
-                    <div className='flex space-x-32'>
+                <div className="footer_top px-20 w-full max-[1340px]:px-40 max-[1200px]:px-20 max-[780px]:text-center max-[780px]:px-0">
+                    <div className='grid grid-cols-4 whitespace-nowrap w-full max-[1200px]:grid-cols-2 max-[780px]:grid-cols-1 '>
                         <div>
-                            <h6 className='text-[24px] font-bold mb-6'>Need Help</h6>
+                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Need Help</h6>
                             <ul className='space-y-3 text-[16px] font-medium'>
                                 <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Track Order</a></li>
@@ -24,8 +24,8 @@ function Footer() {
                                 <li><a href="#">Career</a></li>
                             </ul>
                         </div>
-                        <div>
-                            <h6 className='text-[24px] font-bold mb-6'>Company</h6>
+                        <div className='max-[780px]:mt-12'>
+                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Company</h6>
                             <ul className='space-y-3 text-[16px] font-medium'>
                                 <li><a href="#">About Us</a></li>
                                 <li><a href="#">euphoria Blog</a></li>
@@ -34,8 +34,8 @@ function Footer() {
                                 <li><a href="#">Media</a></li>
                             </ul>
                         </div>
-                        <div>
-                            <h6 className='text-[24px] font-bold mb-6'>More Info</h6>
+                        <div className='max-[1200px]:mt-12'>
+                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>More Info</h6>
                             <ul className='space-y-3 text-[16px] font-medium'>
                                 <li><a href="#">Terms and Conditions</a></li>
                                 <li><a href="#">Privacy Policy</a></li>
@@ -43,8 +43,8 @@ function Footer() {
                                 <li><a href="#">Sitemap</a></li>
                             </ul>
                         </div>
-                        <div>
-                            <h6 className='text-[24px] font-bold mb-6'>Location</h6>
+                        <div className='max-[1200px]:mt-12'>
+                            <h6 className='text-[24px] font-bold mb-6 max-[1200px]:mb-3'>Location</h6>
                             <ul className='space-y-3 text-[16px] font-medium'>
                                 <li><a href="#">support@euphoria.in</a></li>
                                 <li>Eklingpura Chouraha, Ahmedabad Main Road</li>
@@ -54,25 +54,25 @@ function Footer() {
                     </div>
                 </div>
 
-                <div className="footer_mid py-10 px-24">
-                    <div className='flex space-x-[565px]'>
-                        <div className='flex space-x-3 mt-20'>
-                            <div className='bg-white w-[37px] h-[37px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
+                <div className="footer_mid py-10 px-24 max-[1380px]:py-5">
+                    <div className='flex max-[1380px]:flex-col max-[1380px]:space-x-0 max-[1380px]:space-y-10 max-[1380px]:items-center space-x-[565px]'>
+                        <div className='flex space-x-3 max-[1380px]:space-x-8 mt-20'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://www.facebook.com/'>
                                     <img src={Facebook} alt="Facebook" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://www.instagram.com/'>
                                     <img src={Instagram} alt="Instagram" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://twitter.com/'>
                                     <img src={Twitter} alt="Twitter" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to ='https://in.linkedin.com/'>   
                                     <img src={Linkedin} alt="Linkedin" className='w-full h-full object-contain'/>
                                 </Link>
@@ -80,9 +80,9 @@ function Footer() {
                         </div>
                         <div>
                             <div>
-                                <h6 className='text-[24px] font-bold mb-6 whitespace-nowrap'>Download The App</h6>
+                                <h6 className='text-[24px] font-bold mb-6 whitespace-nowrap max-[1380px]:text-center max-[1380px]:mb-2'>Download The App</h6>
                             </div>
-                            <div className='pt-3 font-causten flex space-x-4'>
+                            <div className='pt-3 font-causten flex max-[600px]:flex-col max-[600px]:space-x-0 max-[600px]:space-y-4  space-x-4 max-[1380px]:space-x-8'>
                                 <div className='bg-[#424242]'>
                                     <div className='flex items-center space-x-4 p-2'>
                                         <div>
@@ -113,11 +113,10 @@ function Footer() {
                         </div>
                     </div>
                 </div>
-
                 <div className="footer_mid2 py-10">
                     <div className='flex justify-between items-center border-t border-b  border-[#BEBCBD] py-8'>
                         <div >
-                            <h6 className='text-[24px] font-bold px-24'>Popular categories</h6>
+                            <h6 className='text-[24px] font-bold px-24 max-[680px]:px-0'>Popular categories</h6>
                         </div>
                         <div>
                             <img src={Arrow} alt="Arrow" />
@@ -126,7 +125,7 @@ function Footer() {
                 </div>
 
                 <div className="footer_bot">
-                    <p className='text-[18px] leading-[36px] font-bold text-center'>Copyright © 2023 Euphoria Folks Pvt Ltd. All rights reserved.</p>
+                    <p className='text-[18px] leading-[36px] font-bold text-center max-[620px]:text-[14px]'>Copyright © 2023 Euphoria Folks Pvt Ltd. All rights reserved.</p>
                 </div>
             </div>
         </div>
