@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
 import wishlist from '../../../assets/wishlist.svg';
+import { useWishlist } from '../context/Context';
 
 function Limelight() {
     const [products, setProducts] = useState([]);
-    const [wishlistItems, setWishlistItems] = useState(() => JSON.parse(localStorage.getItem('wishlist')) || []);
+    const { wishlistItems, addToWishlist } = useWishlist();
     const navigate = useNavigate();
     const baseUrl = 'http://localhost:8000';
 
     useEffect(() => {
-        // Fetch products from the API
         fetch(`${baseUrl}/api/v1/category/products/category/14/`)
             .then(response => response.json())
             .then(data => {
@@ -20,12 +20,10 @@ function Limelight() {
             })
             .catch(error => console.error('Error fetching products:', error));
 
-        // Listen for logout event and clear wishlist
         const handleLogout = () => {
-            setWishlistItems([]);  // Clear wishlistItems on logout
+            addToWishlist([]);
         };
 
-        // Listen for token removal (logout event)
         window.addEventListener('storage', (event) => {
             if (event.key === 'token' && event.newValue === null) {
                 handleLogout();
@@ -36,27 +34,6 @@ function Limelight() {
             window.removeEventListener('storage', handleLogout);
         };
     }, [baseUrl]);
-
-    const handleWishlistClick = (productId) => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            alert("Please log in to add to the wishlist.");
-            return;
-        }
-
-        let updatedWishlist;
-        if (wishlistItems.includes(productId)) {
-            updatedWishlist = wishlistItems.filter(id => id !== productId);
-        } else {
-            updatedWishlist = [...wishlistItems, productId];
-        }
-
-        setWishlistItems(updatedWishlist);
-        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-
-        window.dispatchEvent(new Event('wishlistUpdated'));
-    };
 
     const handleProductClick = (productId) => {
         const token = localStorage.getItem('token');
@@ -83,13 +60,13 @@ function Limelight() {
                                 <img src={product.featured_image} alt={product.name} className='w-full h-full' />
                             </div>
                             <div
-                                className={`z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer`}
-                                onClick={() => handleWishlistClick(product.id)}
+                                className={`z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer ${wishlistItems.includes(product.id) ? 'wishlist-active' : ''}`}
+                                onClick={() => addToWishlist(product.id)}
                             >
                                 <img
                                     src={wishlist}
                                     alt="Wishlist"
-                                    className={`p-2 ${wishlistItems.includes(product.id) ? 'wishlist-active' : ''}`}
+                                    className='p-2'
                                 />
                             </div>
                         </div>

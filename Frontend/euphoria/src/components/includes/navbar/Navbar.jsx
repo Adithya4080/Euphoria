@@ -28,16 +28,13 @@ function Navbar() {
         }
 
         // Get wishlist from localStorage and update count
-        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        setWishlistCount(wishlist.length);
-
-        // Listen to wishlist changes
         const handleWishlistUpdate = () => {
             const updatedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
             setWishlistCount(updatedWishlist.length);
         };
 
-        // Add event listener for wishlist updates
+        handleWishlistUpdate(); // Initial count update
+
         window.addEventListener('wishlistUpdated', handleWishlistUpdate);
 
         return () => {
@@ -55,11 +52,11 @@ function Navbar() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('username');  // Remove username from localStorage on logout
-        localStorage.removeItem('wishlist');  // Clear wishlist on logout
+        localStorage.removeItem('username'); 
+        localStorage.removeItem('wishlist');  
         setIsLoggedIn(false);
         setShowUserBox(false);
-        setWishlistCount(0);  // Reset wishlist count on logout
+        setWishlistCount(0);
         navigate('/');
     };
 
