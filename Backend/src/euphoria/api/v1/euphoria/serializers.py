@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from web.models import Category, Product, Gallery
+from web.models import Category, Product, Gallery, Order
 from rest_framework import serializers
 
 
@@ -20,7 +20,7 @@ class ProductSerializer(ModelSerializer):
     gallery = serializers.SerializerMethodField()
 
     class Meta:
-        fields = ("id", "name", "featured_image", "description","brand", "price", "size","ratings", "category", "gallery")
+        fields = ("id", "name", "featured_image", "description","brand", "price", "size","ratings", "category", "gallery", "quantity")
         model = Product
 
     def get_category(self, instance):
@@ -43,3 +43,13 @@ class ProductSerializer(ModelSerializer):
         request = self.context.get('request')
         image_url = obj.featured_image.url
         return request.build_absolute_uri(image_url)
+    
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('user', 'product_id', 'quantity', 'size', 'created_at')
+        extra_kwargs = {
+            'user': {'required': False},
+            'created_at': {'required': False},
+        }

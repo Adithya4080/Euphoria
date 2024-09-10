@@ -92,7 +92,9 @@ function Navbar() {
                         <img src={user} alt="user" />
                     </div>
                     <div className='bg-[#F6F6F6] p-[12px] rounded-md'>
-                        <img src={cart} alt="cart" />
+                        <Link to='/cart'>
+                            <img src={cart} alt="cart" />
+                        </Link>
                     </div>
                 </div>
             </div>

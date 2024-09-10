@@ -1,5 +1,5 @@
 from django.contrib import admin
-from web.models import Product, Category, Gallery , Gender, Size, Specification
+from web.models import Product, Category, Gallery , Gender, Size, Specification, Cart, CartItem, Order
 
 
 class GalleryAdmin(admin.TabularInline):
@@ -21,8 +21,20 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ["name", "category__name", "category__gender__name"]
     inlines = [GalleryAdmin, SpecificationInline]
 
+class CartItemInline(admin.TabularInline):
+    model = CartItem
+    extra = 1
+
+class CartAdmin(admin.ModelAdmin):
+    inlines = [CartItemInline]
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product_id', 'quantity', 'size', 'created_at')
+
 admin.site.register(Product, ProductAdmin)
 
 admin.site.register(Category)
 admin.site.register(Gender)
 admin.site.register(Size)
+admin.site.register(Cart, CartAdmin)
+admin.site.register(Order)

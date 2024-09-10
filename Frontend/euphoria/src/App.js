@@ -5,20 +5,24 @@ import CategoryProducts from './components/includes/products/CategoryProducts';
 import ProductSinglePage from './components/includes/productSingle/ProductSinglePage';
 import Login from './components/screens/login/Login';
 import Signup from './components/screens/login/Signup';
-import { WishlistProvider } from './components/includes/context/Context';
+import Cart from './components/screens/cart/Cart'
+import { WishlistProvider, CartProvider } from './components/includes/context/Context';
 
 function App() {
 	return (
 		<>
 			<Router>
 				<WishlistProvider>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/category/:id" element={<CategoryProducts />} />
-						<Route path = "/product/:id" element={<ProductSinglePage />} />
-						<Route path= "/login" element ={<Login />} />
-						<Route path='/create' element={<Signup />} />
-					</Routes>
+					<CartProvider>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/category/:id" element={<CategoryProducts />} />
+							<Route path = "/product/:id" element={<ProductSinglePage />} />
+							<Route path= "/login" element ={<Login />} />
+							<Route path='/create' element={<Signup />} />
+							<Route path='/cart' element={<Cart />} />
+						</Routes>
+					</CartProvider>
 				</WishlistProvider>
 			</Router>
 
