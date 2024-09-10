@@ -24,11 +24,11 @@ function Signup() {
         try {
             const response = await axios.post('http://localhost:8000/api/v1/auth/create/', formData);
             if (response.data.status_code === 6000) {
-                localStorage.setItem('username', formData.name);
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('token', response.data.data.access);
+                localStorage.setItem('username', formData.name); // Save the name
                 navigate('/login');
             } else {
-                setErrorMessage(response.data.data);  
+                setErrorMessage(response.data.data);
             }
         } catch (error) {
             setErrorMessage('An error occurred. Please try again.');
@@ -108,7 +108,7 @@ function Signup() {
                     </form>
 
                     <p className="text-sm text-center text-gray-600">
-                        Already have an account? <a href="#" className="text-blue-600 hover:underline"><Link to='/login'>Login</Link></a>
+                        Already have an account? <Link to='/login' className="text-blue-600 hover:underline">Login</Link>
                     </p>
                 </div>
             </div>
@@ -117,4 +117,5 @@ function Signup() {
 }
 
 export default Signup;
+
 

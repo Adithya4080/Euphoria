@@ -16,18 +16,18 @@ function Navbar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if token exists in localStorage
         const token = localStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true);
-            // Fetch username from localStorage or API
-            const storedUsername = localStorage.getItem('username');
-            if (storedUsername) {
-                setUsername(storedUsername);
-            }
+            const storedUsername = localStorage.getItem('name');
+            setUsername(storedUsername || '');
+        } else {
+            setIsLoggedIn(false);
+            setUsername('');
         }
+    }, []);
 
-        // Get wishlist from localStorage and update count
+    useEffect(() => {
         const handleWishlistUpdate = () => {
             const updatedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
             setWishlistCount(updatedWishlist.length);
@@ -44,7 +44,7 @@ function Navbar() {
 
     const handleUserClick = () => {
         if (isLoggedIn) {
-            setShowUserBox(!showUserBox);
+            setShowUserBox(prev => !prev);
         } else {
             setShowLoginPrompt(true);
         }
@@ -117,4 +117,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
 

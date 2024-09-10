@@ -53,7 +53,8 @@ def create(request):
             response_data = {
                 "status_code" : 6000,
                 "data" : response.json(),
-                "message": "Account created"
+                "message": "Account created",
+                "name": name
             }
         else:
             response_data = {

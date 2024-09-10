@@ -21,22 +21,25 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('Submitting data:', formData);
             const response = await axios.post('http://localhost:8000/api/v1/auth/token/', formData);
-    
-            console.log('Response data:', response.data);
             if (response.data.access) {
                 const token = response.data.access;
-                const username = formData.name;
-    
+                const username = formData.username;
+
                 localStorage.setItem('token', token);
-                localStorage.setItem('username', username); 
-                navigate('/');
+                localStorage.setItem('username', username);
+
+                // Debugging: Check if redirect path is stored
+                const redirectAfterLogin = localStorage.getItem('redirectAfterLogin') || '/';
+                console.log('Redirecting to:', redirectAfterLogin);
+
+                localStorage.removeItem('redirectAfterLogin'); // Clear the redirect path
+                
+                navigate(redirectAfterLogin); // Redirect to the intended page
             } else {
                 setErrorMessage('Invalid login credentials');
             }
         } catch (error) {
-            console.error('Login error:', error.response ? error.response.data : error.message);  // Log detailed error
             setErrorMessage('An error occurred. Please try again.');
         }
     };
@@ -62,16 +65,16 @@ function Login() {
                     {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-600">Email</label>
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-600">Username</label>
                             <input
-                                type="email"
+                                type="text"
                                 id="username"
                                 name="username"
                                 required
                                 value={formData.username}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 mt-1 text-gray-700 border border-gray-300 rounded-md focus:ring focus:ring-blue-500"
-                                placeholder="you@example.com"
+                                placeholder="Username"
                             />
                         </div>
 
@@ -94,13 +97,13 @@ function Login() {
                                 type="submit"
                                 className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:ring-4 focus:ring-blue-300"
                             >
-                                Sign In
+                                Login
                             </button>
                         </div>
                     </form>
 
                     <p className="text-sm text-center text-gray-600">
-                        Don't have an account? <a href="#" className="text-blue-600 hover:underline"><Link to='/create'>Sign up</Link></a>
+                        Don't have an account? <Link to='/create' className="text-blue-600 hover:underline">Sign Up</Link>
                     </p>
                 </div>
             </div>

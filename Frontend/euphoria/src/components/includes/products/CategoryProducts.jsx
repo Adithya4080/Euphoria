@@ -20,8 +20,10 @@ function CategoryProducts() {
     useEffect(() => {
         console.log('Wishlist Items from Context:', wishlistItems);
         const token = localStorage.getItem('token');
+        const currentPath = window.location.pathname;
 
         if (!token) {
+            localStorage.setItem('redirectAfterLogin', currentPath);
             navigate('/login');
         } else {
             fetch(`http://localhost:8000/api/v1/category/products/protected/${id}/`, {
@@ -31,6 +33,7 @@ function CategoryProducts() {
             })
                 .then(response => {
                     if (response.status === 401) {
+                        localStorage.setItem('redirectAfterLogin', currentPath);
                         navigate('/login');
                     }
                     return response.json();
@@ -101,3 +104,4 @@ function CategoryProducts() {
 }
 
 export default CategoryProducts;
+

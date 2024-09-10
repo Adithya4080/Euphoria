@@ -36,7 +36,7 @@ const CartPage = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(payload),
             });
@@ -74,34 +74,33 @@ const CartPage = () => {
                 ) : (
                     <div className='grid grid-cols-4 gap-4 w-full'>
                         {cart.map((item) => {
-    console.log('Cart Item:', item); // Log the cart item to ensure quantity is correct
-    return (
-        <div key={item.id} className="flex justify-between items-center border-b py-2">
-            <div className='flex flex-col space-y-1 mb-1'>
-                <div className='w-[300px]'><img src={item.featured_image} alt={item.name} className='w-full' /></div>
-                <h2 className="text-xl font-semibold text-ellipsis overflow-hidden line-clamp-2 max-w-[250px] min-h-[50px]">{item.name}</h2>
-                <p>Price: <span className='font-bold'>${item.price}</span></p>
-                <p>Quantity: {item.quantity}</p>
-            </div>
-            <div className='flex space-x-8'>
-                <button
-                    onClick={() => handleRemove(item.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                >
-                    Remove
-                </button>
-                <button 
-                    onClick={() => handleBuyNow(item)}
-                    className='bg-blue-600 text-white px-4 py-2 rounded'
-                    disabled={loadingId === item.id}
-                >
-                    {loadingId === item.id ? 'Processing...' : 'Buy Now'}
-                </button>
-            </div>
-        </div>
-    );
-})}
-
+                            console.log('Cart Item:', item); // Log the cart item to ensure quantity is correct
+                            return (
+                                <div key={item.id} className="flex justify-between items-center border-b py-2">
+                                    <div className='flex flex-col space-y-1 mb-1'>
+                                        <div className='w-[300px]'><img src={item.featured_image} alt={item.name} className='w-full' /></div>
+                                        <h2 className="text-xl font-semibold text-ellipsis overflow-hidden line-clamp-2 max-w-[250px] min-h-[50px]">{item.name}</h2>
+                                        <p>Price: <span className='font-bold'>${item.price}</span></p>
+                                        <p>Quantity: {item.quantity}</p>
+                                    </div>
+                                    <div className='flex space-x-8'>
+                                        <button
+                                            onClick={() => handleRemove(item.id)}
+                                            className="bg-red-500 text-white px-4 py-2 rounded"
+                                        >
+                                            Remove
+                                        </button>
+                                        <button 
+                                            onClick={() => handleBuyNow(item)}
+                                            className='bg-blue-600 text-white px-4 py-2 rounded'
+                                            disabled={loadingId === item.id}
+                                        >
+                                            {loadingId === item.id ? 'Processing...' : 'Buy Now'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>
