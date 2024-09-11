@@ -33,9 +33,9 @@ function Login() {
                 const redirectAfterLogin = localStorage.getItem('redirectAfterLogin') || '/';
                 console.log('Redirecting to:', redirectAfterLogin);
 
-                localStorage.removeItem('redirectAfterLogin'); // Clear the redirect path
+                localStorage.removeItem('redirectAfterLogin');
                 
-                navigate(redirectAfterLogin); // Redirect to the intended page
+                navigate(redirectAfterLogin);
             } else {
                 setErrorMessage('Invalid login credentials');
             }

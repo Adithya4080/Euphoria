@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
-import { useCart } from '../context/Context';
 
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
@@ -22,9 +21,7 @@ import shipping from '../../../assets/shipping.svg'
 function ProductSinglePage() {
     const { id } = useParams();
     const [ product, setProduct ] = useState(null);
-    const [selectedSize, setSelectedSize] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
-    const { addToCart } = useCart();
    
     useEffect(() => {
         fetch(`http://localhost:8000/api/v1/category/view/${id}`)
@@ -44,19 +41,6 @@ function ProductSinglePage() {
             .catch(error => console.error('Error fetching similar products:', error));
     }, [id]);
     
-    const handleSizeClick = (size) => {
-        setSelectedSize(size);
-    };
-
-    const handleAddToCart = () => {
-        if (selectedSize) {
-            const productToAdd = { ...product, selectedSize };
-            addToCart(productToAdd);
-            alert("Product added to cart");
-        } else {
-            alert("Please select a size before adding to the cart.");
-        }
-    };
 
     if (!product) {
         return <p>Loading...</p>
@@ -135,9 +119,8 @@ function ProductSinglePage() {
                             <div className='flex mt-4 space-x-3 pointer-cursor'>
                                     {product.size && product.size.map((size,index) =>(
                                         <div 
-                                            key={index}
-                                            onClick={() => handleSizeClick(size)} 
-                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer ${selectedSize === size ? 'bg-black text-white' : ''}`}>
+                                            key={index} 
+                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer `}>
                                             <p>{size}</p>
                                         </div>
                                     ))}
@@ -154,7 +137,7 @@ function ProductSinglePage() {
                                 </div>
                             </div>
                             <div className='mt-10 flex space-x-6'>
-                                <button className='flex space-x-2 items-center bg-[#8A33Fd] text-white py-2 px-10 rounded-lg' onClick={handleAddToCart}>
+                                <button className='flex space-x-2 items-center bg-[#8A33Fd] text-white py-2 px-10 rounded-lg'>
                                     <img src={cart} alt="Cart" className='text-white fill-current' />
                                     <p className='text-[16px] font-semibold '>Add to cart</p>
                                 </button>

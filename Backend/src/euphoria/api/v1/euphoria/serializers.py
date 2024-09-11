@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from web.models import Category, Product, Gallery, Order
+from web.models import Category, Product, Gallery
 from rest_framework import serializers
 
 
@@ -45,11 +45,3 @@ class ProductSerializer(ModelSerializer):
         return request.build_absolute_uri(image_url)
     
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ('user', 'product_id', 'quantity', 'size', 'created_at')
-        extra_kwargs = {
-            'user': {'required': False},
-            'created_at': {'required': False},
-        }
