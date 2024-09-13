@@ -103,7 +103,7 @@ function Navbar() {
 
             {isLoggedIn && showUserBox && (
                 <div className="absolute right-10 top-20 bg-white shadow-md p-4 rounded-md">
-                    <p className="text-gray-700">Logged in as: {username}</p>
+                    <p className="text-gray-700">Logged in as: {setUsername}</p>
                     <button
                         className="mt-2 px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-400"
                         onClick={handleLogout}

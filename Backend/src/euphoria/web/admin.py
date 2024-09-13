@@ -23,13 +23,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CartItemInline(admin.TabularInline):
     model = CartItem
-    extra = 1
 
 class CartAdmin(admin.ModelAdmin):
     inlines = [CartItemInline]
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product_id', 'quantity', 'size', 'created_at')
+    list_display = ('user', 'quantity')
 
 admin.site.register(Product, ProductAdmin)
 
@@ -37,4 +36,4 @@ admin.site.register(Category)
 admin.site.register(Gender)
 admin.site.register(Size)
 admin.site.register(Cart, CartAdmin)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)

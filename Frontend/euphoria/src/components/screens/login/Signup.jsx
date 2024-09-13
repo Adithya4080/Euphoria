@@ -25,10 +25,10 @@ function Signup() {
             const response = await axios.post('http://localhost:8000/api/v1/auth/create/', formData);
             if (response.data.status_code === 6000) {
                 localStorage.setItem('token', response.data.data.access);
-                localStorage.setItem('username', formData.name); // Save the name
+                localStorage.setItem('username', formData.name);
                 navigate('/login');
             } else {
-                setErrorMessage(response.data.data);
+                setErrorMessage(response.data.data || 'An error occurred');
             }
         } catch (error) {
             setErrorMessage('An error occurred. Please try again.');
@@ -117,5 +117,3 @@ function Signup() {
 }
 
 export default Signup;
-
-

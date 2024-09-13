@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
-
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
 import Rectangle from '../../general/Rectangle';
@@ -18,10 +18,13 @@ import dress from '../../../assets/dress.svg';
 import truck from '../../../assets/truck.svg'
 import shipping from '../../../assets/shipping.svg'
 
-function ProductSinglePage() {
+function ProductSinglePage({product: initialProduct}) {
     const { id } = useParams();
-    const [ product, setProduct ] = useState(null);
+    const [ product, setProduct ] = useState(initialProduct);
     const [similarProducts, setSimilarProducts] = useState([]);
+    const [selectedSize, setSelectedSize] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
    
     useEffect(() => {
         fetch(`http://localhost:8000/api/v1/category/view/${id}`)
@@ -39,9 +42,61 @@ function ProductSinglePage() {
                 }
             })
             .catch(error => console.error('Error fetching similar products:', error));
-    }, [id]);
-    
+    }, [id]); 
 
+
+    const addToCart = async (productId, quantity) => {
+        try {
+          const response = await axios.post('http://localhost:8000/api/v1/cart/add/', {
+            product_id: productId,
+            quantity: quantity,
+          });
+          console.log('Product added to cart:', response.data);
+        } catch (error) {
+          console.error('Error adding product to cart:', error.response ? error.response.data : error.message);
+        }
+    };
+    // const addToCart = () => {
+    //     if (!selectedSize) {
+    //         alert('Please select a Size!');
+    //         return;
+    //     }
+
+    //     setIsLoading(true);
+
+    //     const token = localStorage.getItem('token');
+    //     const config = {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`,
+    //             'Content-Type' : 'application/json'
+    //         },
+    //     };
+
+    //     const payload = {
+    //         product_id: product.id,
+    //         size: selectedSize,
+    //         quantity: 1,
+    //     };
+
+    //     axios.post('http://localhost:8000/api/v1/cart/add/',payload, config)
+    //         .then(response => {
+    //             if (response.data.status === 'success'){
+    //                 alert('Product added to cart successfully!')
+    //                 navigate('/cart');
+    //             } else {
+    //                 alert('Failed to add product to cart')
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Error adding product to cart:', error);
+    //             alert('An error occured while adding to cart')
+    //         })
+    //         .finally(() => {
+    //             setIsLoading(false);
+    //         });
+
+    // };
+    
     if (!product) {
         return <p>Loading...</p>
     }
@@ -120,7 +175,8 @@ function ProductSinglePage() {
                                     {product.size && product.size.map((size,index) =>(
                                         <div 
                                             key={index} 
-                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer `}>
+                                            onClick={() => setSelectedSize(size)}
+                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer ${selectedSize === size ? 'bg-gray-300' : ''} `}>
                                             <p>{size}</p>
                                         </div>
                                     ))}
@@ -137,9 +193,13 @@ function ProductSinglePage() {
                                 </div>
                             </div>
                             <div className='mt-10 flex space-x-6'>
-                                <button className='flex space-x-2 items-center bg-[#8A33Fd] text-white py-2 px-10 rounded-lg'>
+                                <button 
+                                    onClick={addToCart}
+                                    className={`flex space-x-2 items-center bg-[#8A33Fd] text-white py-2 px-10 rounded-lg ${isLoading ? 'opacity-50': ''} `}
+                                    disabled={isLoading}
+                                >
                                     <img src={cart} alt="Cart" className='text-white fill-current' />
-                                    <p className='text-[16px] font-semibold '>Add to cart</p>
+                                    <p className='text-[16px] font-semibold '>{isLoading ? 'Adding to Cart...' : 'Add to cart'}</p>
                                 </button>
                                 <button className='border border-black rounded-lg py-2 px-10 font-semibold'>
                                     ${product.price}
