@@ -18,40 +18,30 @@ function CategoryProducts() {
     const { wishlistItems, addToWishlist } = useWishlist();
 
     useEffect(() => {
-        console.log('Wishlist Items from Context:', wishlistItems);
-        const token = localStorage.getItem('token');
-        const currentPath = window.location.pathname;
-
-        if (!token) {
-            localStorage.setItem('redirectAfterLogin', currentPath);
-            navigate('/login');
-        } else {
-            fetch(`http://localhost:8000/api/v1/category/products/protected/${id}/`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+        // Fetch products
+        fetch(`http://localhost:8000/api/v1/category/products/category/${id}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status_code === 6000) {
+                    setProducts(data.data);
+                    setCategoryName(data.category_name);
+                } else {
+                    setErrorMessage('Failed to load products.');
                 }
             })
-                .then(response => {
-                    if (response.status === 401) {
-                        localStorage.setItem('redirectAfterLogin', currentPath);
-                        navigate('/login');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status_code === 6000) {
-                        setProducts(data.data);
-                        setCategoryName(data.category_name);
-                    } else {
-                        setErrorMessage('Failed to load products.');
-                    }
-                })
-                .catch(error => console.error('Error fetching products:', error));
-        }
-    }, [id, navigate, wishlistItems]);
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                setErrorMessage('An error occurred while fetching products.');
+            });
+    }, [id]);
 
     return (
-        <>  
+        <>
             <Helmet>
                 <title>{categoryName} | Euphoria</title>
             </Helmet>
@@ -64,14 +54,14 @@ function CategoryProducts() {
                 {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
                 <div className='grid grid-cols-4 max-[1080px]:grid-cols-3 max-[768px]:grid-cols-2 gap-10 mb-10'>
                     {products.map(product => (
-                        <div key={product.id}>
-                            <div className='relative'>
-                                <div className='w-full h-[370px] relative'>
-                                    <Link to={`/product/${product.id}`}>
-                                        <img src={product.featured_image} alt={product.name} className='w-full h-full' />
-                                    </Link>
-                                </div>
-                                <div 
+                        <div key={product.id} className='relative'>
+                            <div className='w-full h-[370px]'>
+                                <Link to={`/product/${product.id}`}>
+                                    <img src={product.featured_image} alt={product.name} className='w-full h-full object-cover' />
+                                </Link>
+                            </div>
+                            {localStorage.getItem('user_data') && (
+                                <div
                                     className={`z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer ${wishlistItems.includes(product.id) ? 'wishlist-active' : ''}`}
                                     onClick={() => {
                                         console.log('Clicked wishlist for product:', product.id); // Debugging line
@@ -80,7 +70,7 @@ function CategoryProducts() {
                                 >
                                     <img src={wishlist} alt="Wishlist" className='p-2' />
                                 </div>
-                            </div>
+                            )}
                             <div className='flex justify-between items-center mt-3'>
                                 <div>
                                     <Link to={`/product/${product.id}`}>
@@ -104,4 +94,3 @@ function CategoryProducts() {
 }
 
 export default CategoryProducts;
-

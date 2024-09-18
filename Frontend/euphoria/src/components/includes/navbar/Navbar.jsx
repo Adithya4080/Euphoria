@@ -5,21 +5,22 @@ import search from '../../../assets/search.svg';
 import wishlist from '../../../assets/wishlist.svg';
 import user from '../../../assets/account.svg';
 import cart from '../../../assets/cart.svg';
-import LoginPrompt from '../../screens/login/LoginPrompt';  // Import your LoginPrompt component
+import LoginPrompt from '../../screens/login/LoginPrompt';
 
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [showUserBox, setShowUserBox] = useState(false);
     const [username, setUsername] = useState('');
-    const [wishlistCount, setWishlistCount] = useState(0); // Track wishlist count
+    const [wishlistCount, setWishlistCount] = useState(0); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        // Check if user is logged in
+        const token = localStorage.getItem('user_data');
         if (token) {
             setIsLoggedIn(true);
-            const storedUsername = localStorage.getItem('name');
+            const storedUsername = localStorage.getItem('username');
             setUsername(storedUsername || '');
         } else {
             setIsLoggedIn(false);
@@ -33,7 +34,7 @@ function Navbar() {
             setWishlistCount(updatedWishlist.length);
         };
 
-        handleWishlistUpdate(); // Initial count update
+        handleWishlistUpdate();
 
         window.addEventListener('wishlistUpdated', handleWishlistUpdate);
 
@@ -44,14 +45,16 @@ function Navbar() {
 
     const handleUserClick = () => {
         if (isLoggedIn) {
-            setShowUserBox(prev => !prev);
+            setShowUserBox((prev) => !prev);
+            setShowLoginPrompt(false);
         } else {
             setShowLoginPrompt(true);
+            setShowUserBox(false);
         }
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('user_data');
         localStorage.removeItem('username'); 
         localStorage.removeItem('wishlist');  
         setIsLoggedIn(false);
@@ -99,11 +102,9 @@ function Navbar() {
                 </div>
             </div>
 
-            {showLoginPrompt && <LoginPrompt closeLoginPrompt={() => setShowLoginPrompt(false)} />}
-
             {isLoggedIn && showUserBox && (
                 <div className="absolute right-10 top-20 bg-white shadow-md p-4 rounded-md">
-                    <p className="text-gray-700">Logged in as: {setUsername}</p>
+                    <p className="text-gray-700">Logged in as: {username}</p>
                     <button
                         className="mt-2 px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-400"
                         onClick={handleLogout}
@@ -112,10 +113,12 @@ function Navbar() {
                     </button>
                 </div>
             )}
+
+            {!isLoggedIn && showLoginPrompt && (
+                <LoginPrompt closeLoginPrompt={() => setShowLoginPrompt(false)} />
+            )}
         </div>
     );
 }
 
 export default Navbar;
-
-

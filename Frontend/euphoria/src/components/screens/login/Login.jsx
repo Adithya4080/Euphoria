@@ -1,49 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../../assets/Logo.svg';
 import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Store } from '../../includes/context/Store';
 
-function Login() {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
 
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    function Login() {
+        const [username, setUsername] =useState("");
+        const [password, setPassword] =useState("");
+        const [message, setMessage] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8000/api/v1/auth/token/', formData);
-            if (response.data.access) {
-                const token = response.data.access;
-                const username = formData.username;
+        const { updateUserData } = useContext(Store) 
 
-                localStorage.setItem('token', token);
-                localStorage.setItem('username', username);
+        const navigate = useNavigate();
 
-                // Debugging: Check if redirect path is stored
-                const redirectAfterLogin = localStorage.getItem('redirectAfterLogin') || '/';
-                console.log('Redirecting to:', redirectAfterLogin);
-
-                localStorage.removeItem('redirectAfterLogin'); // Clear the redirect path
-                
-                navigate(redirectAfterLogin); // Redirect to the intended page
-            } else {
-                setErrorMessage('Invalid login credentials');
-            }
-        } catch (error) {
-            setErrorMessage('An error occurred. Please try again.');
-        }
-    };
-
+        const handleSubmit = (e) => {
+            setMessage("")
+            e.preventDefault();
+            axios.post("http://localhost:8000/api/v1/auth/token/",{username,password})
+            .then((response) =>{
+                let data = response.data;
+                localStorage.setItem("user_data", JSON.stringify(data));
+                localStorage.setItem("username", username);
+                updateUserData({ type:"LOGIN",payload: data })
+                toast.success("Logged in Successful!", {
+                    position: "center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                });
+                navigate("/")           
+            })
+            .catch((error) => {
+                console.log(error.response.status);
+                if (error.response.status === 401) {
+                    setMessage(error.response.data.detail)
+                }
+            })
+        };
+    
     return (
         <>
             <Helmet>
@@ -62,36 +66,29 @@ function Login() {
             <div className="flex items-center justify-center py-24 bg-gray-100">
                 <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-md">
                     <h2 className="text-2xl font-bold text-center text-gray-700">Login</h2>
-                    {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium text-gray-600">Username</label>
                             <input
-                                type="text"
-                                id="username"
-                                name="username"
+                                onChange={(e) => setUsername(e.target.value)}
+                                value={username}
                                 required
-                                value={formData.username}
-                                onChange={handleChange}
+                                type="text"
                                 className="w-full px-3 py-2 mt-1 text-gray-700 border border-gray-300 rounded-md focus:ring focus:ring-blue-500"
                                 placeholder="Username"
                             />
                         </div>
-
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
                             <input
-                                type="password"
-                                id="password"
-                                name="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                                 required
-                                value={formData.password}
-                                onChange={handleChange}
+                                type="password"
                                 className="w-full px-3 py-2 mt-1 text-gray-700 border border-gray-300 rounded-md focus:ring focus:ring-blue-500"
                                 placeholder="••••••••"
                             />
                         </div>
-
                         <div>
                             <button
                                 type="submit"
@@ -101,12 +98,13 @@ function Login() {
                             </button>
                         </div>
                     </form>
-
                     <p className="text-sm text-center text-gray-600">
                         Don't have an account? <Link to='/create' className="text-blue-600 hover:underline">Sign Up</Link>
                     </p>
+                    {message && <div className='text-red-500 text-center text-sm'>{message}</div>}
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 }
