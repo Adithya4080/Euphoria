@@ -28,7 +28,8 @@ class CartAdmin(admin.ModelAdmin):
     inlines = [CartItemInline]
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'quantity')
+    list_display = ('id', 'user', 'cart', 'created_at')
+    search_fields = ('user__username',)
 
 admin.site.register(Product, ProductAdmin)
 

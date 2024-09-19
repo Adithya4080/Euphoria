@@ -5,7 +5,6 @@ import Navbar from '../../includes/navbar/Navbar';
 import Footer from '../../includes/footer/Footer'
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
-import Button from '../../general/Button';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -48,6 +47,32 @@ const Cart = () => {
     }, []);
 
     const handleRemoveFromCart = async (productId) => {
+        console.log("Removing product with ID:", productId);
+        const token = JSON.parse(localStorage.getItem('user_data'));
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token.access}`,
+                'Content-Type': 'application/json',
+            },
+        };
+    
+        try {
+            const response = await axios.delete(`http://localhost:8000/api/v1/cart/remove/${productId}/`, config);
+            console.log("Remove response:", response.data);
+    
+            setCartItems(prevCartItems => {
+                const updatedItems = prevCartItems.filter(item => item.id !== productId);
+                const updatedTotal = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                setTotalPrice(updatedTotal);
+                return updatedItems;
+            });
+        } catch (error) {
+            console.error('Error removing item from cart:', error.response ? error.response.data : error.message);
+            setError('Failed to remove item from cart'); // Update error state
+        }
+    };
+    
+    const handleBuyNow = async () => {
         const token = JSON.parse(localStorage.getItem('user_data'));
         const config = {
             headers: {
@@ -57,24 +82,25 @@ const Cart = () => {
         };
 
         try {
-            await axios.delete(`http://localhost:8000/api/v1/cart/remove/${productId}/`, config);
-            setCartItems(cartItems.filter(item => item.product !== productId));
-        } catch (error) {
-            console.error('Error removing item from cart:', error);
-        }
-    };
+            // Make POST request to checkout API
+            const response = await axios.post('http://localhost:8000/api/v1/cart/checkout/', {}, config);
+            console.log('Checkout response:', response.data);
+            
+            // Clear cart items from state and optionally make an API call to clear the cart
+            setCartItems([]);
+            setTotalPrice(0);
+            alert('Order placed successfully!');
 
-    const handleBuyNow = (productId) => {
-        // Navigate to checkout or handle buy now functionality here
-        console.log('Buying product with ID:', productId);
+            // Optionally, clear the cart on the backend (if not handled in the checkout process)
+            await axios.delete(`http://localhost:8000/api/v1/cart/clear/`, config); // Create this endpoint if it doesn't exist
+        } catch (error) {
+            console.error('Error during checkout:', error.response ? error.response.data : error.message);
+            setError('Failed to place order');
+        }
     };
 
     if (isLoading) {
         return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <p>{error}</p>;
     }
 
     return (
@@ -95,9 +121,10 @@ const Cart = () => {
                         <div className='w-full flex gap-20'>
                             <div className='grid grid-cols-3 w-[75%] font-causten'>
                                 {cartItems.map(item => {
+                                    console.log(item);                                    
                                     const imageUrl = `http://localhost:8000${item.image}`; 
                                     return (
-                                        <div key={item.product} className='space-y-1 mt-4'>
+                                        <div key={item.id} className='space-y-1 mt-4'>
                                             <div className='w-[200px] h-[200px]'>
                                                 <img src={imageUrl} alt={item.product} className='w-full h-full rounded-lg' />
                                             </div>
@@ -107,7 +134,15 @@ const Cart = () => {
                                             <p>Price: ${item.price}.00</p>
                                             <p>Quantity: {item.quantity}</p>
                                             <div className='flex flex-col w-[200px] space-y-2'>
-                                                <Button text="Remove From Cart" className='bg-blue-500 p-2 text-white text-sm font-bold' />
+                                                <button 
+                                                    className='bg-blue-500 p-2 text-white text-sm font-bold rounded-lg'  
+                                                    onClick={() => {
+                                                        alert("Button clicked!");
+                                                        handleRemoveFromCart(item.id);
+                                                    }}
+                                                >
+                                                    Remove From Cart
+                                                </button>
                                             </div>                               
                                         </div>
                                     );
@@ -134,11 +169,12 @@ const Cart = () => {
                                     <p className='text-xl font-bold'>${totalPrice}.00</p>
                                 </div>
                                 <div className='border-b-2 my-2'></div>
-                                <Button 
-                                    text="Buy Now" 
-                                    className='bg-red-600 text-white p-2 mt-4 w-full font-bold' 
-                                    onClick={handleBuyNow} 
-                                />
+                                <button 
+                                    className='bg-red-600 text-white p-2 mt-4 w-full font-bold rounded-lg'
+                                    onClick={handleBuyNow}
+                                >
+                                    Buy Now
+                                </button>
                             </div>
                         </div>
                     )}
