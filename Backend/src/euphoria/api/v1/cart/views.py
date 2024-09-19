@@ -9,27 +9,24 @@ from rest_framework.exceptions import NotFound
 @api_view(['POST'])
 def add_to_cart(request):
     try:
-        user = request.user
-        if not user.is_authenticated:
-            return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+        user = request.user        
         product_id = request.data.get('product_id')
-        quantity = request.data.get('quantity', 1)
+        quantity = int(request.data.get('quantity', 1))
+
+        if quantity < 1:
+            return Response({'error': 'Quantity must be at least 1'}, status=status.HTTP_400_BAD_REQUEST)
 
         product = Product.objects.get(id=product_id)
         cart, created = Cart.objects.get_or_create(user=user)
 
         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-        cart_item.quantity += int(quantity)
+        cart_item.quantity += quantity
         cart_item.save()
 
         return Response({'message': 'Item added to cart'}, status=status.HTTP_200_OK)
     
     except Product.DoesNotExist:
         return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
-    except Exception as e:
-        # Log the error or handle it appropriately
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # View Cart
@@ -37,25 +34,45 @@ def add_to_cart(request):
 @permission_classes([IsAuthenticated])
 def view_cart(request):
     user = request.user
-    cart = Cart.objects.get(user=user)
-    items = CartItem.objects.filter(cart=cart)
-    
-    cart_data = {
-        'cart_items': [{'product': item.product.name, 'quantity': item.quantity} for item in items],
-        'total_items': sum(item.quantity for item in items),
-    }
-    
-    return Response(cart_data)
+    try:
+        cart = Cart.objects.get(user=user)
+        items = CartItem.objects.filter(cart=cart)
+
+        cart_data = {
+            'cart_items': [
+                {
+                    'product': item.product.name,
+                    'quantity': item.quantity,
+                    'price': item.product.price,
+                    'image': item.product.featured_image.url if item.product.featured_image else None
+                }
+                for item in items
+            ],
+            'total_items': sum(item.quantity for item in items),
+            'total_price': sum(item.product.price * item.quantity for item in items),  # Total cost
+        }
+
+        return Response(cart_data, status=status.HTTP_200_OK)
+    except Cart.DoesNotExist:
+        return Response({'message': 'Cart is empty'}, status=status.HTTP_404_NOT_FOUND)
+
 
 # Buy Now / Checkout
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def checkout(request):
     user = request.user
-    cart = Cart.objects.get(user=user)
-    order = Order.objects.create(user=user, cart=cart)
-    
-    # Clear the cart after ordering
-    cart.delete()
-    
-    return Response({'message': 'Order placed successfully'})
+    try:
+        cart = Cart.objects.get(user=user)
+        items = CartItem.objects.filter(cart=cart)
+
+        if not items.exists():
+            return Response({'error': 'Your cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        order = Order.objects.create(user=user, cart=cart)
+        cart.delete()
+
+        return Response({'message': 'Order placed successfully'}, status=status.HTTP_200_OK)
+    except Cart.DoesNotExist:
+        return Response({'error': 'Cart does not exist'}, status=status.HTTP_404_NOT_FOUND)
+

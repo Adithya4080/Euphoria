@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
@@ -18,84 +18,72 @@ import dress from '../../../assets/dress.svg';
 import truck from '../../../assets/truck.svg'
 import shipping from '../../../assets/shipping.svg'
 
-function ProductSinglePage({product: initialProduct}) {
+function ProductSinglePage() {
     const { id } = useParams();
-    const [ product, setProduct ] = useState(initialProduct);
+    const [ product, setProduct ] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
     const [selectedSize, setSelectedSize] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
    
     useEffect(() => {
-        fetch(`http://localhost:8000/api/v1/category/view/${id}`)
-            .then(response => response.json())
-            .then(result => {
+        const fetchProduct = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/v1/category/view/${id}`);
+                const result = await response.json();
+                console.log('Fetched product:', result.data); // Log the fetched product
                 setProduct(result.data);
-                return fetch(`http://localhost:8000/api/v1/category/view/${result.data.category_id}`);
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status_code === 6000) {
-                    setSimilarProducts(data.products);
+            } catch (error) {
+                console.error('Error fetching product:', error);
+            }
+        };
+    
+        fetchProduct();
+    }, [id]);
+
+    const addToCart = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+    
+        const token = JSON.parse(localStorage.getItem('user_data'));
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token.access}`,
+                'Content-Type': 'application/json',
+            },
+        };
+    
+        const payload = {
+            product_id: product.id,
+            quantity: 1,
+        };
+    
+        axios.post('http://localhost:8000/api/v1/cart/add/', payload, config)
+            .then((response) => {
+                console.log('Add to cart response:', response); // Log the entire response
+                const responseData = response.data; // Extract data directly
+                if (responseData && responseData.message === 'Item added to cart') {
+                    navigate('/cart');
                 } else {
-                    console.log('No similar products found');
+                    alert('Failed to add product to cart: ' + (responseData.message || 'Unknown error'));
                 }
             })
-            .catch(error => console.error('Error fetching similar products:', error));
-    }, [id]); 
-
-
-    const addToCart = async (productId, quantity) => {
-        try {
-          const response = await axios.post('http://localhost:8000/api/v1/cart/add/', {
-            product_id: productId,
-            quantity: quantity,
-          });
-          console.log('Product added to cart:', response.data);
-        } catch (error) {
-          console.error('Error adding product to cart:', error.response ? error.response.data : error.message);
-        }
+            .catch((error) => {
+                console.error('Error adding product to cart:', error);
+                if (error.response) {
+                    console.error('Response data:', error.response.data);
+                    alert('An error occurred: ' + (error.response.data.detail || error.message));
+                } else {
+                    alert('An error occurred: ' + error.message);
+                }
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
-    // const addToCart = () => {
-    //     if (!selectedSize) {
-    //         alert('Please select a Size!');
-    //         return;
-    //     }
+    
+    
 
-    //     setIsLoading(true);
-
-    //     const token = localStorage.getItem('token');
-    //     const config = {
-    //         headers: {
-    //             'Authorization': `Bearer ${token}`,
-    //             'Content-Type' : 'application/json'
-    //         },
-    //     };
-
-    //     const payload = {
-    //         product_id: product.id,
-    //         size: selectedSize,
-    //         quantity: 1,
-    //     };
-
-    //     axios.post('http://localhost:8000/api/v1/cart/add/',payload, config)
-    //         .then(response => {
-    //             if (response.data.status === 'success'){
-    //                 alert('Product added to cart successfully!')
-    //                 navigate('/cart');
-    //             } else {
-    //                 alert('Failed to add product to cart')
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error adding product to cart:', error);
-    //             alert('An error occured while adding to cart')
-    //         })
-    //         .finally(() => {
-    //             setIsLoading(false);
-    //         });
-
-    // };
     
     if (!product) {
         return <p>Loading...</p>
@@ -306,29 +294,7 @@ function ProductSinglePage({product: initialProduct}) {
                             <Rectangle />
                             <Heading text="Similar Products" />
                         </div>
-                        <div className='grid grid-cols-4 gap-10'>
-                            {similarProducts.map((product) => (
-                                <div key={product.id} className='w-full'>
-                                    <div className='relative'>
-                                        <div className='w-full h-[370px] relative'>
-                                            <img src={product.featured_image} alt={product.name} className='w-full h-full' />
-                                        </div>
-                                        <div className=' z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer'>
-                                            <img src={wishlist} alt="Wishlist"  className='p-2'/>
-                                        </div>
-                                    </div>
-                                    <div className='flex justify-between items-center mt-3'>
-                                        <div>
-                                            <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>{product.name}</h4>
-                                            <p className='text-[#7F7F7F] text-[12px] font-medium'>{product.brand}'s Brand</p>
-                                        </div>
-                                        <div >
-                                            <p className='text-[#2A2F2F] text-[16px] font-bold'>${product.price}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>   
+                        
                     </div>
                 </div>
             </div>

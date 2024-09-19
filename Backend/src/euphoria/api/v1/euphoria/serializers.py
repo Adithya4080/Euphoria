@@ -14,7 +14,6 @@ class GallerySerializer(ModelSerializer):
         model = Gallery
 
 class ProductSerializer(ModelSerializer):
-
     category = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
     gallery = serializers.SerializerMethodField()
@@ -27,7 +26,7 @@ class ProductSerializer(ModelSerializer):
         return instance.category.name
     
     def get_size(self, instance):
-        return [size.name for size in instance.size.all()]
+        return list(instance.size.values_list('name', flat=True))
     
     def get_gallery(self, instance):
         request = self.context.get("request")

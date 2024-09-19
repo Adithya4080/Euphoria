@@ -14,7 +14,6 @@ function NewArrivals() {
             .then(response => response.json())
             .then(data => {
                 const filteredCategories = data.data.filter(category => category.id >= 2 && category.id <= 5);
-                console.log('Filtered Categories:', filteredCategories); 
                 setCategories(filteredCategories);
             })
             .catch(error => console.error('Error fetching categories:', error));
