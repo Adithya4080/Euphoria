@@ -31,7 +31,7 @@ function ProductSinglePage() {
             try {
                 const response = await fetch(`http://localhost:8000/api/v1/category/view/${id}`);
                 const result = await response.json();
-                console.log('Fetched product:', result.data); // Log the fetched product
+                console.log('Fetched product:', result.data);
                 setProduct(result.data);
             } catch (error) {
                 console.error('Error fetching product:', error);

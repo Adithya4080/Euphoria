@@ -10,15 +10,21 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
+    product_id = serializers.IntegerField(source='product.id', read_only=True)
 
     class Meta:
         model = CartItem
-        fields = ['product', 'quantity', 'id']
+        fields = ['product', 'quantity', 'id', 'product_id']
+
+    def validate_quantity(self, value):
+        if value < 1:
+            raise serializers.ValidationError("Quantity must be at least 1.")
+        return value
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemSerializer(source='cart.cartitem_set', many=True)  # Serialize all cart items in the order
+    cart_items = CartItemSerializer(source='cart.cartitem_set', many=True)
 
     class Meta:
         model = Order
-        fields = ['user', 'cart', 'cart_items']  # Include cart_items for a detailed view of the order
+        fields = ['id', 'user', 'cart', 'total_price', 'status', 'cart_items']

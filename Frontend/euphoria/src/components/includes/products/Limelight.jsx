@@ -36,7 +36,7 @@ function Limelight() {
     }, [baseUrl]);
 
     const handleProductClick = (productId) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('user_data');
 
         if (!token) {
             alert("Please log in to view product details.");

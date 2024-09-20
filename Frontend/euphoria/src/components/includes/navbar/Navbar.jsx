@@ -16,7 +16,6 @@ function Navbar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is logged in
         const token = localStorage.getItem('user_data');
         if (token) {
             setIsLoggedIn(true);

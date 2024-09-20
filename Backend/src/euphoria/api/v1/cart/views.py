@@ -1,12 +1,13 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from web.models import Cart, CartItem, Order, Product
+from web.models import Cart, CartItem, Order, Product, OrderItem
 
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_to_cart(request):
     try:
         user = request.user        
@@ -57,29 +58,32 @@ def view_cart(request):
         return Response({'message': 'Cart is empty'}, status=status.HTTP_404_NOT_FOUND)
 
 
-# Buy Now / Checkout
-from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def checkout(request):
-    user = request.user
-    try:
-        cart = Cart.objects.get(user=user)
-        items = CartItem.objects.filter(cart=cart)
+    items = request.data.get('items', [])
+    total_price = 0
+    order = Order(user=request.user)
 
-        if not items.exists():
-            return Response({'error': 'Your cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+    for item in items:
+        product_id = item.get('productId')
+        quantity = item.get('quantity')
 
-        # Create the order
-        order = Order.objects.create(user=user, cart=cart, created_at=timezone.now())
-        
-        # Optionally delete the cart if you want to
-        # cart.delete()
+        try:
+            product = Product.objects.get(id=product_id)
+            order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
+            total_price += product.price * quantity
+        except ObjectDoesNotExist:
+            return Response({'error': f'Product with ID {product_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'message': 'Order placed successfully'}, status=status.HTTP_200_OK)
-    except Cart.DoesNotExist:
-        return Response({'error': 'Cart does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    order.total_price = total_price
+    order.save()
+
+    return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
+
+
 
 
 
