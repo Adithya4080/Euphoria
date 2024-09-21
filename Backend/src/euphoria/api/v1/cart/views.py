@@ -61,57 +61,6 @@ def view_cart(request):
 
 from django.core.exceptions import ObjectDoesNotExist
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def checkout(request):
-#     items = request.data.get('items', [])
-#     total_price = 0
-#     order = Order(user=request.user)
-
-#     for item in items:
-#         product_id = item.get('productId')
-#         quantity = item.get('quantity')
-
-#         try:
-#             product = Product.objects.get(id=product_id)
-#             order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
-#             total_price += product.price * quantity
-#         except ObjectDoesNotExist:
-#             return Response({'error': f'Product with ID {product_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#     order.total_price = total_price
-#     order.save()
-
-#     return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
-
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def checkout(request):
-#     items = request.data.get('items', [])
-#     total_price = 0
-#     order = Order(user=request.user)
-
-#     for item in items:
-#         product_id = item.get('product_id')
-#         quantity = item.get('quantity')
-
-#         try:
-#             product = Product.objects.get(id=product_id)
-#             if quantity > product.quantity:
-#                 return Response({'error': f'Insufficient quantity for product ID {product_id}.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#             order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
-#             total_price += product.price * quantity
-#             product.quantity -= quantity  # Decrease the product stock
-#             product.save()
-#         except Product.DoesNotExist:
-#             return Response({'error': f'Product with ID {product_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#     order.total_price = total_price
-#     order.save()
-
-#     return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
