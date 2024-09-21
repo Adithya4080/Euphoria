@@ -65,7 +65,7 @@ function ProductSinglePage() {
                 console.log('Add to cart response:', response);
                 const responseData = response.data;
                 if (responseData && responseData.message === 'Item added to cart') {
-                    // navigate('/cart');
+                    navigate('/cart');
                 } else {
                     alert('Failed to add product to cart: ' + (responseData.message || 'Unknown error'));
                 }

@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from web.models import Cart, CartItem, Order, Product, OrderItem
 
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from django.db import transaction
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -42,6 +42,7 @@ def view_cart(request):
         cart_data = {
             'cart_items': [
                 {
+                    'id': item.id,
                     'product': item.product.name,
                     'quantity': item.quantity,
                     'price': item.product.price,
@@ -83,33 +84,89 @@ from django.core.exceptions import ObjectDoesNotExist
 
 #     return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
 
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def checkout(request):
+#     items = request.data.get('items', [])
+#     total_price = 0
+#     order = Order(user=request.user)
+
+#     for item in items:
+#         product_id = item.get('product_id')
+#         quantity = item.get('quantity')
+
+#         try:
+#             product = Product.objects.get(id=product_id)
+#             if quantity > product.quantity:
+#                 return Response({'error': f'Insufficient quantity for product ID {product_id}.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#             order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
+#             total_price += product.price * quantity
+#             product.quantity -= quantity  # Decrease the product stock
+#             product.save()
+#         except Product.DoesNotExist:
+#             return Response({'error': f'Product with ID {product_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#     order.total_price = total_price
+#     order.save()
+
+#     return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@transaction.atomic  # Ensures atomicity
 def checkout(request):
     items = request.data.get('items', [])
+
+    # If no items are provided in the request
+    if not items:
+        return Response({'error': 'No items in the cart.'}, status=status.HTTP_400_BAD_REQUEST)
+
     total_price = 0
+
+    # Create the Order instance
     order = Order(user=request.user)
+    order.save()  # Save the order first to associate OrderItems with it
 
     for item in items:
         product_id = item.get('productId')
         quantity = item.get('quantity')
 
+        # Validate if product_id and quantity are provided
+        if not product_id or not quantity:
+            return Response({'error': 'Invalid product data.'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             product = Product.objects.get(id=product_id)
-            if quantity > product.quantity:
-                return Response({'error': f'Insufficient quantity for product ID {product_id}.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity)
+            # Check if the product stock is sufficient
+            if quantity > product.quantity:
+                return Response({
+                    'error': f'Insufficient stock for product ID {product_id}. Requested: {quantity}, Available: {product.quantity}'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            # Create OrderItem and associate it with the Order
+            order_item = OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity
+            )
             total_price += product.price * quantity
-            product.quantity -= quantity  # Decrease the product stock
+
+            # Reduce the product stock
+            product.quantity -= quantity
             product.save()
+
         except Product.DoesNotExist:
             return Response({'error': f'Product with ID {product_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # After processing all items, update the total price and save the order
     order.total_price = total_price
     order.save()
 
-    return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Order placed successfully', 'order_id': order.id}, status=status.HTTP_201_CREATED)
+
 
 
 
