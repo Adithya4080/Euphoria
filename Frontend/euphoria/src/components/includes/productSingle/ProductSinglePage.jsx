@@ -57,13 +57,15 @@ function ProductSinglePage() {
             product_id: product.id,
             quantity: 1,
         };
-    
+        
+        console.log('Adding to cart with payload:', payload);
+
         axios.post('http://localhost:8000/api/v1/cart/add/', payload, config)
             .then((response) => {
-                console.log('Add to cart response:', response); // Log the entire response
-                const responseData = response.data; // Extract data directly
+                console.log('Add to cart response:', response);
+                const responseData = response.data;
                 if (responseData && responseData.message === 'Item added to cart') {
-                    navigate('/cart');
+                    // navigate('/cart');
                 } else {
                     alert('Failed to add product to cart: ' + (responseData.message || 'Unknown error'));
                 }

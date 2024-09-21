@@ -1,4 +1,4 @@
-from web.models import CartItem, Product, Order
+from web.models import CartItem, Product, Order, OrderItem
 from rest_framework import serializers
 
 
@@ -22,9 +22,21 @@ class CartItemSerializer(serializers.ModelSerializer):
         return value
 
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity']
+
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemSerializer(source='cart.cartitem_set', many=True)
+    order_items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'cart', 'total_price', 'status', 'cart_items']
+        fields = ['id', 'user', 'cart', 'total_price', 'status', 'created_at', 'order_items']
+
+    def create(self, validated_data):
+        order_items_data = validated_data.pop('order_items')
+        order = Order.objects.create(**validated_data)
+        for item_data in order_items_data:
+            OrderItem.objects.create(order=order, **item_data)
+        return order

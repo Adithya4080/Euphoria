@@ -28,7 +28,7 @@ const Cart = () => {
                 console.log('Cart items response:', response.data);
                 const items = response.data.cart_items.map(item => ({
                     ...item,
-                    productId: item.productId,
+                    productId: item.product_id,
                     quantity: item.quantity, // Use the quantity provided by the backend
                 }));
                 setCartItems(items);
@@ -118,8 +118,7 @@ const Cart = () => {
     };
     
     
-    
-    
+
 
     // Handle loading state
     if (isLoading) {
