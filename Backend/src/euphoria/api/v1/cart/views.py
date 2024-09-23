@@ -37,7 +37,7 @@ def view_cart(request):
     user = request.user
     try:
         cart = Cart.objects.get(user=user)
-        items = CartItem.objects.filter(cart=cart)
+        items = CartItem.objects.filter(cart=cart).select_related('product')
 
         cart_data = {
             'cart_items': [
@@ -51,15 +51,12 @@ def view_cart(request):
                 for item in items
             ],
             'total_items': sum(item.quantity for item in items),
-            'total_price': sum(item.product.price * item.quantity for item in items),  # Total cost
+            'total_price': sum(item.product.price * item.quantity for item in items),
         }
 
         return Response(cart_data, status=status.HTTP_200_OK)
     except Cart.DoesNotExist:
         return Response({'message': 'Cart is empty'}, status=status.HTTP_404_NOT_FOUND)
-
-
-from django.core.exceptions import ObjectDoesNotExist
 
 
 @api_view(['POST'])
@@ -123,11 +120,9 @@ def checkout(request):
 @permission_classes([IsAuthenticated])
 def remove_from_cart(request, product_id):
     try:
-        # Get the cart for the authenticated user
         cart = Cart.objects.get(user=request.user)
-        # Access the cart items using the related name 'cart_items'
         item = cart.cart_items.get(product__id=product_id)
-        item.delete()  # Remove the item from the cart
+        item.delete()
         return Response({'message': 'Item removed from cart'}, status=status.HTTP_204_NO_CONTENT)
     except Cart.DoesNotExist:
         return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -143,9 +138,7 @@ def clear_cart(request):
     user = request.user
     try:
         cart = Cart.objects.get(user=user)
-        # Delete all cart items associated with this cart
         cart.cart_items.all().delete()
-        # Delete the cart itself
         cart.delete()
         return Response({'message': 'Cart cleared successfully'}, status=status.HTTP_204_NO_CONTENT)
     except Cart.DoesNotExist:

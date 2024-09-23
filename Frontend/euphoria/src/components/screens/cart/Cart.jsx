@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import { PropagateLoader } from 'react-spinners';
 import Navbar from '../../includes/navbar/Navbar';
 import Footer from '../../includes/footer/Footer';
 import Rectangle from '../../general/Rectangle';
@@ -37,12 +38,17 @@ const Cart = () => {
             } catch (error) {
                 console.error('Error fetching cart items:', error);
                 setError('Failed to fetch cart items');
-            } finally {
-                setIsLoading(false);
             }
         };
 
         fetchCartItems();
+
+        const loadingTimeout = setTimeout(() => {
+            setIsLoading(false);
+        }, 5000);
+
+        // Clean up the timeout if the component unmounts before 10 seconds
+        return () => clearTimeout(loadingTimeout);
     }, []);
 
     const updateTotalPrice = (items) => {
@@ -122,8 +128,16 @@ const Cart = () => {
     
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return (
+            <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+                <div className='flex flex-col items-center'>
+                    <PropagateLoader color="#3b82f6" size={15} />
+                    <p className='mt-4 text-lg font-semibold text-gray-700'>Loading your cart...</p>
+                </div>
+            </div>
+        );
     }
+    
 
     return (
         <>  
