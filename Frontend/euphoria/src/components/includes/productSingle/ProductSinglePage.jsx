@@ -7,8 +7,10 @@ import Footer from '../footer/Footer';
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
+import { useWishlist } from '../context/Context';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
-import wishlist from '../../../assets/wishlist.svg';
 import Arrow from '../../../assets/Arrow.svg';
 import Message from '../../../assets/message.svg';
 import Right from '../../../assets/arrow-right.svg';
@@ -24,6 +26,10 @@ function ProductSinglePage() {
     const [similarProducts, setSimilarProducts] = useState([]);
     const [selectedSize, setSelectedSize] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+    const { wishlistItems, addToWishlist } = useWishlist();
     const navigate = useNavigate();
    
     useEffect(() => {
@@ -33,9 +39,29 @@ function ProductSinglePage() {
                 const result = await response.json();
                 console.log('Fetched product:', result.data);
                 setProduct(result.data);
+                if (result.data && result.data.gallery.length > 0) {
+                    setSelectedImage(result.data.featured_image || result.data.gallery[0].image);
+                }
+                const categoryId = result.data.category.id;
+                const similarResponse = await fetch(`http://localhost:8000/api/v1/category/similar/${categoryId}`);
+                const similarResult = await similarResponse.json();
+                console.log('Fetched similar products:', similarResult.data);
+                setSimilarProducts(similarResult.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
             }
+            const handleLogout = () => {
+                addToWishlist([]);
+            };
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'token' && event.newValue === null) {
+                    handleLogout();
+                }
+            });
+    
+            return () => {
+                window.removeEventListener('storage', handleLogout);
+            };
         };
     
         fetchProduct();
@@ -55,7 +81,7 @@ function ProductSinglePage() {
     
         const payload = {
             product_id: product.id,
-            // quantity: 1,
+            quantity: 1,
         };
         
         console.log('Adding to cart with payload:', payload);
@@ -84,6 +110,20 @@ function ProductSinglePage() {
             });
     };
 
+    const handleImageClick = (imageUrl, index) => {
+        setSelectedImage(imageUrl);
+        setSelectedImageIndex(index);
+    };
+    const handleProductClick = (productId) => {
+        const token = localStorage.getItem('user_data');
+
+        if (!token) {
+            alert("Please log in to view product details.");
+            return;
+        }
+
+        navigate(`/product/${productId}`);
+    };
     
     if (!product) {
         return <p>Loading...</p>
@@ -97,32 +137,37 @@ function ProductSinglePage() {
             <div className="wrapper">
                 <div className='top flex items-center pb-20 gap-10 font-causten'>
                     <div className='top_left gap-4 flex flex-col'>
-                        {product.gallery.map((item, index) => (
-                            <div key={item.id} className='imgs w-[68px] h-[68px] cursor-pointer'>
+                        {product.gallery.slice(currentIndex, currentIndex + 3).map((item, index) => (
+                            <div
+                                key={item.id}
+                                className={`w-[78px] h-[78px] p-1 cursor-pointer ${selectedImageIndex === index ? 'border border-black rounded-lg' : ''}`}
+                                onClick={() => handleImageClick(item.image, index)}
+                            >
                                 <img src={item.image} alt={`product ${index}`} className='w-full h-full' />
                             </div>
                         ))}
                         <div className='flex flex-col justify-center items-center cursor-pointer'>
                             <div>
-                                <img src={Arrow} alt="Arrow" />
+                                <img src={Arrow} alt="Arrow Up" />
                             </div>
                             <div>
-                                <img src={Arrow} alt="Arrow" className='rotate-180'/>
+                                <img src={Arrow} alt="Arrow Down" className='rotate-180' />
                             </div>
                         </div>
                     </div>
                     <div className="top_mid">
                         <div className='img w-[520px] h-[785px]'>
-                            <img src={product.featured_image} alt={product.name} className='w-full h-full' />
+                            <img src={selectedImage} alt={product.name} className='w-full h-full' />
                         </div>
                     </div>
+
                     <div className='top_right w-full pl-10'>
                         <div className='flex items-center text-[14px] font-medium text-[#807D7E]'>
                             <p>Shop</p>
                             <img src={Arrow} alt="Arrow" className='rotate-90' />
-                            <p>Women</p>
+                            <p>{product.category.gender}</p>
                             <img src={Arrow} alt="Arrow" className='rotate-90' />
-                            <p>Top</p>
+                            <p>{product.category.name}</p>
                         </div>
                         <div className='py-10 '>
                             <h3 className='text-[#3C4242] text-[34px] max-w-[350px] font-semibold leading-[48px] line-clamp-2'>
@@ -294,7 +339,41 @@ function ProductSinglePage() {
                             <Rectangle />
                             <Heading text="Similar Products" />
                         </div>
-                        
+                        <div className=' grid grid-cols-4 gap-4'>
+                            {similarProducts.map((product) => (
+                                <div key={product.id} className='w-full border p-2 rounded-lg'>
+                                    <div className='relative'>
+                                        <div className='w-full h-[370px] relative'>
+                                            <img src={`http://localhost:8000${product.featured_image}`}  alt={product.name} className='w-full h-full' />
+                                        </div>
+                                        <div
+                                            className='z-1 bg-gray-100 rounded-[50%] absolute top-6 right-4 cursor-pointer p-2'
+                                            onClick={() => addToWishlist(product.id)}
+                                        >
+                                            {wishlistItems.includes(product.id) ? (
+                                                <FaHeart className="wishlist-active text-[18px]" />
+                                            ) : (
+                                                <FaRegHeart className="text-[18px] " />
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className='flex justify-between items-center mt-3'>
+                                        <div>
+                                        <Link to={`/product/${product.id}`}>
+                                            <h4 className='text-[#2A2F2F] text-[14px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[150px] cursor-pointer'>
+                                                {product.name}
+                                            </h4>
+                                        </Link>
+                                            <p className='text-[#7F7F7F] text-[12px] max-[480px]:text-[16px] font-medium'>{product.brand}'s Brand</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#2A2F2F] text-[16px] max-[480px]:text-[22px] font-bold'>${product.price}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

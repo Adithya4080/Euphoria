@@ -1,5 +1,7 @@
 from django.urls import path
 from api.v1.euphoria import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.category),
@@ -9,4 +11,4 @@ urlpatterns = [
     path('products/category/<int:category_id>/', views.products_by_category),
     path('products/protected/<int:category_id>/', views.protected_category_products),
     path('similar/<int:category_id>/', views.similar_products_by_category),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -23,7 +23,12 @@ class ProductSerializer(ModelSerializer):
         model = Product
 
     def get_category(self, instance):
-        return instance.category.name
+        category_data = {
+            'id': instance.category.id,
+            'name': instance.category.name,
+            'gender': instance.category.gender.name if instance.category.gender else None  # Access gender
+        }
+        return category_data
     
     def get_size(self, instance):
         return list(instance.size.values_list('name', flat=True))

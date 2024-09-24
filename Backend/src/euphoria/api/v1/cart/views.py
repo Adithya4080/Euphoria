@@ -98,20 +98,12 @@ def buy_now(request):
     try:
         cart = Cart.objects.get(user=user)
         items = CartItem.objects.filter(cart=cart)
-        
         if not items.exists():
             return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
-
         total_price = sum(item.product.price * item.quantity for item in items)
-
-        # Create Order
         order = Order.objects.create(user=user, total_price=total_price)
-
-        # Create Order Items
         for item in items:
             OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity, price=item.product.price)
-
-        # Clear the cart
         items.delete()
         return Response({'message': 'Order placed successfully', 'order_id': order.id}, status=status.HTTP_201_CREATED)
     except Exception as e:

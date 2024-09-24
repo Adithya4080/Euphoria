@@ -52,7 +52,7 @@ function Limelight() {
                 <Rectangle />
                 <Heading text="In The Limelight" />
             </div>
-            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 max-[480px]:grid-cols-1 gap-10'>
+            <div className='grid grid-cols-4 max-[1000px]:grid-cols-3 max-[768px]:grid-cols-2 max-[480px]:grid-cols-1 gap-10'>
                 {products.map(product => (
                     <div key={product.id} className='w-full'>
                         <div className='relative'>
@@ -60,7 +60,7 @@ function Limelight() {
                                 <img src={product.featured_image} alt={product.name} className='w-full h-full' />
                             </div>
                             <div
-                                className='z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer p-2'
+                                className='z-1 bg-gray-100 rounded-[50%] absolute top-6 right-4 cursor-pointer p-2'
                                 onClick={() => addToWishlist(product.id)}
                             >
                                 {wishlistItems.includes(product.id) ? (
