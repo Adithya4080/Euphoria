@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
@@ -55,7 +55,7 @@ function ProductSinglePage() {
     
         const payload = {
             product_id: product.id,
-            quantity: 1,
+            // quantity: 1,
         };
         
         console.log('Adding to cart with payload:', payload);

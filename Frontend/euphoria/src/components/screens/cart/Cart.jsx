@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { PropagateLoader } from 'react-spinners';
+import { useNavigate} from 'react-router-dom';
 import Navbar from '../../includes/navbar/Navbar';
 import Footer from '../../includes/footer/Footer';
 import Rectangle from '../../general/Rectangle';
@@ -12,6 +13,7 @@ const Cart = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -29,8 +31,8 @@ const Cart = () => {
                 console.log('Cart items response:', response.data);
                 const items = response.data.cart_items.map(item => ({
                     ...item,
-                    productId: item.id, // Ensure this corresponds to your API response
-                    quantity: item.quantity,
+                    productId: item.id,
+                    quantity: item.quantity || 1,
                 }));
                 setCartItems(items);
                 const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -45,9 +47,7 @@ const Cart = () => {
 
         const loadingTimeout = setTimeout(() => {
             setIsLoading(false);
-        }, 5000);
-
-        // Clean up the timeout if the component unmounts before 10 seconds
+        }, 1000);
         return () => clearTimeout(loadingTimeout);
     }, []);
 
@@ -61,7 +61,7 @@ const Cart = () => {
             const updatedItems = prevCartItems.map(item => {
                 if (item.id === productId) {
                     const newQuantity = item.quantity + change;
-                    if (newQuantity < 1) return item; // Prevent quantity going below 1
+                    if (newQuantity < 1 || newQuantity > item.stock) return item;
                     return { ...item, quantity: newQuantity };
                 }
                 return item;
@@ -81,7 +81,9 @@ const Cart = () => {
         };
     
         try {
-            await axios.delete(`http://localhost:8000/api/v1/cart/remove/${productId}/`, config);
+            const response = await axios.delete(`http://localhost:8000/api/v1/cart/remove/${productId}/`, config);
+            console.log('Response:', response.data);
+
             setCartItems(prevCartItems => {
                 const updatedItems = prevCartItems.filter(item => item.id !== productId);
                 updateTotalPrice(updatedItems);
@@ -89,6 +91,7 @@ const Cart = () => {
             });
         } catch (error) {
             console.error('Error removing item from cart:', error.response ? error.response.data : error.message);
+            alert(error.response?.data?.error || 'Failed to remove item from cart');
             setError('Failed to remove item from cart');
         }
     };
@@ -103,36 +106,24 @@ const Cart = () => {
             },
         };
     
-        const orderData = {
-            items: cartItems.map(item => ({
-                product_id: item.productId,
-                quantity: item.quantity,
-            })),
-            total_price: totalPrice // Include the total price here
-        };
-    
-    
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/cart/checkout/', { items: orderData }, config);
-            console.log('Checkout response:', response.data);
-            setCartItems([]);
-            setTotalPrice(0);
-            alert('Order placed successfully!');
+            const response = await axios.post('http://localhost:8000/api/v1/cart/buy/', {}, config);
+            console.log('Order Response:', response.data);
+            alert('Order placed successfully');
+            navigate('/success')
         } catch (error) {
-            console.error('Error during checkout:', error.response ? error.response.data : error.message);
-            setError('Failed to place order');
+            console.error('Error placing order:', error.response ? error.response.data : error.message);
+            alert(error.response?.data?.error || 'Failed to place order');
         }
-    };
-    
-    
+    }; 
     
 
     if (isLoading) {
         return (
             <div className='flex items-center justify-center min-h-screen bg-gray-100'>
                 <div className='flex flex-col items-center'>
-                    <PropagateLoader color="#3b82f6" size={15} />
-                    <p className='mt-4 text-lg font-semibold text-gray-700'>Loading your cart...</p>
+                    <PropagateLoader color="#36d7b7" size={15} />
+                    <p className='mt-4 text-lg font-semibold text-gray-700 uppercase'>Loading your cart...</p>
                 </div>
             </div>
         );
@@ -160,7 +151,7 @@ const Cart = () => {
                                     console.log(item);                                    
                                     const imageUrl = `http://localhost:8000${item.image}`; 
                                     return (
-                                        <div key={item.id} className='space-y-1 mt-4 p-4 border border-black flex flex-col justify-center rounded-lg'>
+                                        <div key={item.id} className='space-y-1 mt-4 p-4 border border-gray-200 flex flex-col justify-center rounded-lg shadow-zinc-600'>
                                             <div className='w-[100%] h-[200px] flex items-center justify-center'>
                                                 <img src={imageUrl} alt={item.product} className='w-full h-full' />
                                             </div>
@@ -168,14 +159,16 @@ const Cart = () => {
                                             <h3 className='text-[#2A2F2F] text-[16px] font-bold overflow-hidden max-w-[100%] cursor-pointer h-[50px] line-clamp-2'>
                                                 {item.product}
                                             </h3>
-                                            <p className='text-sm text-gray-600'>{item.brand}</p> {/* Display brand */}
+                                            <p className='text-sm text-gray-600'>{item.brand}</p>
                                             <p className='text-sm text-gray-600'>{item.category}</p> {/* Display category */}
                                             <div className='flex items-center justify-between'>
                                                 <span>Price:</span>
                                                 <p> ${item.price}.00</p>
                                             </div>
-                                            <p>Available stock: {item.available_quantity}</p>
-
+                                            <div className='flex items-center justify-between'>
+                                                <span>Available stock:</span>
+                                                <span>{item.stock}</span>
+                                            </div>
                                             <div className='flex items-center justify-between pb-2'>
                                                 <div>
                                                     <span>Quantity:</span>

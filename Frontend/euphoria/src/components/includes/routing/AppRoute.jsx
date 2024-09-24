@@ -11,6 +11,8 @@ import { WishlistProvider } from '../context/Context';
 import { Context } from '../context/Store';
 import { ToastContainer } from 'react-toastify';
 import AuthRoute from './AuthRoute';
+import NoMatch from '../../screens/error/NoMatch';
+import Success from '../../screens/cart/Success';
 
 function App() {
 	return (
@@ -32,6 +34,8 @@ function App() {
 							<Route path= "/login" element ={<Login />} />
 							<Route path='/create' element={<Signup />} />
 							<Route path='/cart' element={<Cart />} />
+							<Route path='/success' element={<Success/>} />
+							<Route path='*' element={<NoMatch />} />
 						</Routes>
 				</WishlistProvider>
 			</Router>
