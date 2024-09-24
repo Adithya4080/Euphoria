@@ -26,7 +26,7 @@ function WomenCategory() {
                 <Rectangle />
                 <Heading text="Categories For Women" className='max-[360px]:text-[24px]' />
             </div>
-            <div className='grid grid-cols-4 max-[1320px]:grid-cols-2 max-[360px]:grid-cols-1  gap-6'>
+            <div className='grid grid-cols-4 max-[1320px]:grid-cols-3 max-[768px]:grid-cols-2 max-[360px]:grid-cols-1  gap-6'>
                 {categories.map(category => (
                     <div key={category.id}>
                         <div className='w-full h-[393px]'>
