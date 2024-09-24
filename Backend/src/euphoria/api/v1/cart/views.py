@@ -105,7 +105,7 @@ def buy_now(request):
         total_price = sum(item.product.price * item.quantity for item in items)
 
         # Create Order
-        order = Order.objects.create(user=user, total_price=total_price, status='Pending')
+        order = Order.objects.create(user=user, total_price=total_price)
 
         # Create Order Items
         for item in items:

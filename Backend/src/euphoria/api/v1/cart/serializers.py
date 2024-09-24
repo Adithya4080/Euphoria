@@ -21,3 +21,22 @@ class CartItemSerializer(ModelSerializer):
         fields = ['product', 'quantity', 'id']
 
 
+class OrderItemSerializer(ModelSerializer):
+    product = ProductSerializer()
+    user = serializers.StringRelatedField()
+
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity', 'price']
+
+class OrderSerializer(ModelSerializer):
+    order_items = OrderItemSerializer(many=True, read_only=True) 
+    user = serializers.StringRelatedField()
+
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'total_price', 'status', 'created_at', 'order_items']
+
+    def get_order_items(self, obj):
+        order_items = obj.order_items.all()
+        return OrderItemSerializer(order_items, many=True).data

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
-import wishlist from '../../../assets/wishlist.svg';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
 import { useWishlist } from '../context/Context';
@@ -62,13 +62,14 @@ function CategoryProducts() {
                             </div>
                             {localStorage.getItem('user_data') && (
                                 <div
-                                    className={`z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer ${wishlistItems.includes(product.id) ? 'wishlist-active' : ''}`}
-                                    onClick={() => {
-                                        console.log('Clicked wishlist for product:', product.id); // Debugging line
-                                        addToWishlist(product.id);
-                                    }}
+                                    className='z-1 bg-gray-100 rounded-[50%] absolute top-6 right-4 cursor-pointer p-2'
+                                    onClick={() => addToWishlist(product.id)}
                                 >
-                                    <img src={wishlist} alt="Wishlist" className='p-2' />
+                                    {wishlistItems.includes(product.id) ? (
+                                        <FaHeart className="wishlist-active text-[18px]" />
+                                    ) : (
+                                        <FaRegHeart className="text-[18px] " />
+                                    )}
                                 </div>
                             )}
                             <div className='flex justify-between items-center mt-3'>

@@ -18,8 +18,8 @@ function App() {
 	return (
 		<>
         <Context>
-			<Router>
-				<WishlistProvider>
+			<WishlistProvider>
+				<Router>				
                     <ToastContainer />
 						<Routes>
 							<Route path="/" element={<Home />} />
@@ -37,8 +37,8 @@ function App() {
 							<Route path='/success' element={<Success/>} />
 							<Route path='*' element={<NoMatch />} />
 						</Routes>
-				</WishlistProvider>
-			</Router>
+				</Router>
+			</WishlistProvider>
         </Context>
 		</>
 	);

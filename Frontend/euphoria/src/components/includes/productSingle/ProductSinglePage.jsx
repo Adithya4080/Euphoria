@@ -83,8 +83,6 @@ function ProductSinglePage() {
                 setIsLoading(false);
             });
     };
-    
-    
 
     
     if (!product) {

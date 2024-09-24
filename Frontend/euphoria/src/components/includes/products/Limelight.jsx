@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Rectangle from '../../general/Rectangle';
 import Heading from '../../general/Heading';
-import wishlist from '../../../assets/wishlist.svg';
 import { useWishlist } from '../context/Context';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 function Limelight() {
     const [products, setProducts] = useState([]);
@@ -60,14 +60,14 @@ function Limelight() {
                                 <img src={product.featured_image} alt={product.name} className='w-full h-full' />
                             </div>
                             <div
-                                className={`z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer ${wishlistItems.includes(product.id) ? 'wishlist-active' : ''}`}
+                                className='z-1 bg-white rounded-[50%] absolute top-6 right-4 cursor-pointer p-2'
                                 onClick={() => addToWishlist(product.id)}
                             >
-                                <img
-                                    src={wishlist}
-                                    alt="Wishlist"
-                                    className='p-2'
-                                />
+                                {wishlistItems.includes(product.id) ? (
+                                    <FaHeart className="wishlist-active text-[18px]" />
+                                ) : (
+                                    <FaRegHeart className="text-[18px] " />
+                                )}
                             </div>
                         </div>
 

@@ -11,8 +11,12 @@ export const WishlistProvider = ({ children }) => {
         const updatedWishlist = wishlistItems.includes(productId)
             ? wishlistItems.filter(id => id !== productId)
             : [...wishlistItems, productId];
+
         setWishlistItems(updatedWishlist);
         localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+
+        const event = new Event ('wishlistUpdated');
+        window.dispatchEvent(event);
     };
 
     return (
