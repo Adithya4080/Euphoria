@@ -255,7 +255,7 @@ function ProductSinglePage() {
                                     <p className='text-[16px] text-[#3C4242] font-medium'>Free Shipping</p>
                                 </div>
                             </div>
-                            <div className='flex flex-col space-y-6'>
+                            <div className='flex flex-col space-y-6 max-[540px]:hidden'>
                                 <div className='flex items-center space-x-6'>
                                     <div className='w-[24px] h-[24px]'>
                                         <img src={dress} alt="Dress" className='w-full h-full' />

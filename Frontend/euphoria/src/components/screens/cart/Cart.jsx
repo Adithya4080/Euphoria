@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { PropagateLoader } from 'react-spinners';
 import { useNavigate} from 'react-router-dom';
+import { toast, Bounce } from 'react-toastify';
 import Navbar from '../../includes/navbar/Navbar';
 import Footer from '../../includes/footer/Footer';
 import Rectangle from '../../general/Rectangle';
@@ -14,6 +15,21 @@ const Cart = () => {
     const [error, setError] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const navigate = useNavigate();
+
+    const customToast = (message, type) => {
+        toast(message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+            type: 'success', 
+        });
+    };
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -32,7 +48,7 @@ const Cart = () => {
                 const items = response.data.cart_items.map(item => ({
                     ...item,
                     productId: item.id,
-                    quantity: item.quantity || 1,
+                    quantity: item.quantity,
                 }));
                 setCartItems(items);
                 const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -109,7 +125,7 @@ const Cart = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/v1/cart/buy/', {}, config);
             console.log('Order Response:', response.data);
-            alert('Order placed successfully');
+            customToast('Order placed successfully');
             navigate('/success')
         } catch (error) {
             console.error('Error placing order:', error.response ? error.response.data : error.message);
@@ -154,12 +170,9 @@ const Cart = () => {
                                             <div className='w-[100%] h-[200px] flex items-center justify-center'>
                                                 <img src={imageUrl} alt={item.product} className='w-full h-full' />
                                             </div>
-                                            <p>{item.id}</p>
                                             <h3 className='text-[#2A2F2F] text-[16px] font-bold overflow-hidden max-w-[100%] cursor-pointer h-[50px] line-clamp-2'>
                                                 {item.product}
                                             </h3>
-                                            <p className='text-sm text-gray-600'>{item.brand}</p>
-                                            <p className='text-sm text-gray-600'>{item.category}</p> {/* Display category */}
                                             <div className='flex items-center justify-between'>
                                                 <span>Price:</span>
                                                 <p> ${item.price}.00</p>

@@ -26,7 +26,7 @@ export const WishlistProvider = ({ children }) => {
 
     const addToWishlist = (productId) => {
         if (!userData) {
-            customToast("Please log in to manage your wishlist.", "error");
+            customToast("Please log in to add products to wishlist.", "error");
             return;
         }
 

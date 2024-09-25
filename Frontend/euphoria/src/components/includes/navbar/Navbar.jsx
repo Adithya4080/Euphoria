@@ -77,6 +77,7 @@ function Navbar() {
             type: 'warning', 
         });
     };
+    
     const handleCartClick = () => {
         if (isLoggedIn) {
             navigate('/cart');
