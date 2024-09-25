@@ -6,6 +6,7 @@ import wishlist from '../../../assets/wishlist.svg';
 import user from '../../../assets/account.svg';
 import cart from '../../../assets/cart.svg';
 import LoginPrompt from '../../screens/login/LoginPrompt';
+import { toast, Bounce } from 'react-toastify'
 
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -62,6 +63,29 @@ function Navbar() {
         navigate('/');
     };
 
+    const customToast = (message, type) => {
+        toast(message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+            type: 'warning', 
+        });
+    };
+    const handleCartClick = () => {
+        if (isLoggedIn) {
+            navigate('/cart');
+        } else {
+            customToast('Please log in to view your cart.');
+            setShowLoginPrompt(true);
+        }
+    };
+
     return (
         <div className='font-causten py-8 sticky top-0 bg-white z-10 border-b border-[#BEBCBD]'>
             <div className="wrapper flex justify-between items-center">
@@ -93,10 +117,8 @@ function Navbar() {
                     <div className='bg-[#F6F6F6] p-[12px] rounded-md' onClick={handleUserClick}>
                         <img src={user} alt="user" />
                     </div>
-                    <div className='bg-[#F6F6F6] p-[12px] rounded-md'>
-                        <Link to='/cart'>
-                            <img src={cart} alt="cart" />
-                        </Link>
+                    <div className='bg-[#F6F6F6] p-[12px] rounded-md' onClick={handleCartClick}>
+                        <img src={cart} alt="cart" />
                     </div>
                 </div>
             </div>

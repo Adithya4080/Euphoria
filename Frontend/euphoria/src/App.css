@@ -46,3 +46,18 @@
     height: 100px;
   }
 }
+
+.arrow-next, .arrow-prev {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.arrow-next {
+  right: 10px;
+}
+
+.arrow-prev {
+  left: 10px;
+}

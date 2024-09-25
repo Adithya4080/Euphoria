@@ -128,7 +128,6 @@ const Cart = () => {
             </div>
         );
     }
-    
 
     return (
         <>  
