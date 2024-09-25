@@ -56,23 +56,23 @@ function Footer() {
 
                 <div className="footer_mid py-10 px-24 max-[1380px]:py-5">
                     <div className='flex max-[1380px]:flex-col max-[1380px]:space-x-0 max-[1380px]:space-y-10 max-[1380px]:items-center space-x-[565px]'>
-                        <div className='flex space-x-3 max-[1380px]:space-x-8 mt-20'>
-                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px]  rounded-[10px] flex items-center justify-center cursor-pointer'>
+                        <div className='flex space-x-3 max-[1380px]:space-x-8 mt-20 max-[1380px]:mt-10'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] max-[360px]:w-[37px] max-[360px]:h-[37px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://www.facebook.com/'>
                                     <img src={Facebook} alt="Facebook" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] max-[360px]:w-[37px] max-[360px]:h-[37px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://www.instagram.com/'>
                                     <img src={Instagram} alt="Instagram" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] max-[360px]:w-[37px] max-[360px]:h-[37px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to='https://twitter.com/'>
                                     <img src={Twitter} alt="Twitter" className='w-full h-full object-contain'/>
                                 </Link>
                             </div>
-                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
+                            <div className='bg-white w-[37px] h-[37px] max-[1380px]:w-[50px] max-[1380px]:h-[50px] max-[360px]:w-[37px] max-[360px]:h-[37px] rounded-[10px] flex items-center justify-center cursor-pointer'>
                                 <Link to ='https://in.linkedin.com/'>   
                                     <img src={Linkedin} alt="Linkedin" className='w-full h-full object-contain'/>
                                 </Link>

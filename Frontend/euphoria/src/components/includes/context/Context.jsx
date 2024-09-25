@@ -18,7 +18,7 @@ export const WishlistProvider = ({ children }) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: "dark",
             transition: Bounce,
             type: type, 
         });

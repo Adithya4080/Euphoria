@@ -16,9 +16,9 @@ function CategoryProducts() {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const { wishlistItems, addToWishlist } = useWishlist();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch products
         fetch(`http://localhost:8000/api/v1/category/products/category/${id}/`)
             .then(response => {
                 if (!response.ok) {

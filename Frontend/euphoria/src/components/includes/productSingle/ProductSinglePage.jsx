@@ -209,7 +209,7 @@ function ProductSinglePage() {
                                         <div 
                                             key={index} 
                                             onClick={() => setSelectedSize(size)}
-                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer ${selectedSize === size ? 'bg-gray-300' : ''} `}>
+                                            className={`border border-black rounded-lg w-[42px] h-[42px] flex items-center justify-center cursor-pointer ${selectedSize === size ? 'bg-black text-white' : ''} `}>
                                             <p>{size}</p>
                                         </div>
                                     ))}
@@ -240,7 +240,7 @@ function ProductSinglePage() {
                             </div>
                             <div className='border-b border-[#BEBCBD] mt-7'></div>
                         </div>
-                        <div className='py-5 flex items-center space-x-20'>
+                        <div className='py-5 flex items-center space-x-20 whitespace-nowrap max-[1280px]:flex-col max-[1280px]:space-x-0 max-[1280px]:space-y-4 max-[1080px]:flex-row max-[1080px]:justify-between max-[1080px]:mt-0'>
                             <div className='flex flex-col space-y-6'>
                                 <div className='flex items-center space-x-6'>
                                     <div className='w-[24px] h-[24px]'>
@@ -339,8 +339,8 @@ function ProductSinglePage() {
                             <Rectangle />
                             <Heading text="Similar Products" />
                         </div>
-                        <div className=' grid grid-cols-4 gap-4'>
-                            {similarProducts.map((product) => (
+                        <div className=' grid grid-cols-4 max-[980px]:grid-cols-3 max-[768px]:grid-cols-2  gap-4'>
+                            {similarProducts.slice(0,4).map((product) => (
                                 <div key={product.id} className='w-full border p-2 rounded-lg'>
                                     <div className='relative'>
                                         <div className='w-full h-[370px] relative'>

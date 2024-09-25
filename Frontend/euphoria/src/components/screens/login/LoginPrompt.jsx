@@ -16,12 +16,12 @@ const LoginPrompt = ({closeLoginPrompt}) => {
     };
     return (
         <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
-            <div className='bg-sky-300 text-white rounded-md text-center p-8 space-y-2'>
+            <div className='bg-amber-300 text-white rounded-md text-center p-8 space-y-2'>
                 <div className='flex justify-center items-center text-4xl text-red-700'>
                     <IoWarning />
                 </div>
-                <h2 className='font-bold text-2xl'>Sign In Required</h2>
-                <div onClick={handleSignIn}><Button text='Sign In'  /></div>
+                <h2 className='font-bold text-2xl text-emerald-800'>Sign In Required</h2>
+                <div onClick={handleSignIn}><Button text='Sign In' className='p-1'  /></div>
                 <button onClick={closeLoginPrompt} className='bg-blue-900 px-4 py-1 rounded-md'>
                     Close
                 </button>

@@ -103,7 +103,10 @@ function Navbar() {
                 </div>
                 <div className="navmid2 flex items-center bg-[#F6F6F6] py-[12px] px-[24px] space-x-4 rounded-md max-[680px]:hidden">
                     <img src={search} alt='SearchBar' />
-                    <input type="text" placeholder='Search' className='bg-[#F6F6F6]' />
+                    <input 
+                        type="text" 
+                        placeholder='Search' 
+                        className=' bg-transparent' />
                 </div>
                 <div className="navright flex space-x-6 cursor-pointer">
                     <div className='relative bg-[#F6F6F6] p-[12px] rounded-md'>
